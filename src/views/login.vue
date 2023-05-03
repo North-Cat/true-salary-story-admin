@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const adminStore = useAdminStore();
 function login() {
-  adminStore.isLogin = true;
+  adminStore.login('username','password');
   router.push('/');
 }
 
