@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { createRouter, type RouteRecordRaw, createWebHashHistory } from 'vue-router'
 import Index from '@/views/index.vue'
 import Login from '@/views/login.vue'
 import Guideline from '@/views/guideline.vue'
@@ -22,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHashHistory(),
   routes
 })
 
