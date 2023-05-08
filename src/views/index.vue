@@ -90,7 +90,6 @@ const router = useRouter()
 const adminStore = useAdminStore();
 function logout(){
   adminStore.logout();
-  router.push('/login');
 }
 
 </script>

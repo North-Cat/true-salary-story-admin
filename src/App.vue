@@ -7,7 +7,8 @@ import router from './router';
 import { useAdminStore } from '@/stores/admin';
 
 router.beforeEach((to, from, next) => {
-  const isLogin = localStorage.getItem('auth_token'); // 是否有登入
+  const adminStore = useAdminStore();
+  const isLogin = adminStore.isLogin; // 是否有登入
 
   // 測試用
   if (to.name === 'guideline'){
