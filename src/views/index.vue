@@ -8,12 +8,41 @@
         <img src="../assets/img/LOGO.png" alt="LOGO" />
       </a>
       <div class="sm:hidden md:flex flex-row justify-center items-center">
-        <button 
-        @click="logout"
-        class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-black-10 hover:bg-blue rounded">
-          <span class="icon-person text-lg me-2"></span>
-          <h6>登出</h6>
-          </button>
+        <button
+          @click="showUserList = !showUserList"
+          class="rounded-full bg-blue h-12 w-12 flex justify-center items-center"
+          type="button"
+        >
+        <h4 class="text-white">{{ adminStore.account.slice(0,1).toUpperCase() }}</h4>
+        </button>
+        <div
+          v-if="showUserList"
+          class="absolute shadow bg-white top-[90px] right-0 w-[300px] p-5 rounded"
+        >
+          <div class="flex justify-between pb-3 border-b border-b-black-5">
+            <div class="text-xl">
+              {{ adminStore.account }}
+            </div>
+            <div>
+              <button
+                class="bg-black-1 px-2 py-1 mr-2 text-sm tracking-widest"
+                @click="showUserList = false"
+              >
+                <i class="icon-cross"></i>
+              </button>
+            </div>
+          </div>
+          <div class="flex justify-center items-center pt-2">
+            <button
+              class="rounded py-5 px-3 bg-white group hover:bg-blue-light hover:text-blue w-full text-center"
+              @click="logout"
+            >
+              <span class="text-black-10 group-hover:text-blue">
+                登出
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -91,5 +120,7 @@ const adminStore = useAdminStore();
 function logout(){
   adminStore.logout();
 }
+// 使用者 modal
+let showUserList = ref(false);
 
 </script>
