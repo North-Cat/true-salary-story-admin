@@ -10,14 +10,28 @@
       </div>
       <h2 class="text-blue mt-5 md:text-3xl text-2xl">管理後台</h2>
       <div class="mt-10">
-        <input type="text" class="w-full border border-black-1 rounded py-3 px-4 mb-5" placeholder="請輸入帳號" >
-        <input type="text" class="w-full border border-black-1 rounded py-3 px-4" placeholder="請輸入密碼">
+        <input 
+        v-model="account" 
+        type="text" 
+        class="w-full border border-black-1 rounded py-3 px-4 mb-2" 
+        placeholder="請輸入帳號" >
+        <input 
+        v-model="password" 
+        type="password" 
+        class="w-full border border-black-1 rounded py-3 px-4" 
+        placeholder="請輸入密碼">
+        <span class="caption text-black-10">密碼不得低於 8 字元</span>
       </div>
-      <div class="mt-10">
+      <div class="mt-8">
         <button 
           @click="login"
-          class="w-full flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded">
-          登入
+          class="w-full flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded mb-2">
+          <h6>登入</h6>
+        </button>
+        <button 
+          @click="signup"
+          class="w-full flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-blue border border-blue fill-white bg-white hover:bg-blue-light rounded">
+          <h6>註冊</h6>
         </button>
       </div>
     </div>
@@ -27,13 +41,37 @@
 
 <script setup lang="ts">
 import { useAdminStore } from '@/stores/admin';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const adminStore = useAdminStore();
-function login() {
-  adminStore.login('username','password');
-  router.push('/');
+const account = ref<string>('');
+const password = ref<string>('');
+
+function validate(): boolean{
+  let isPass = true;
+  if (!account.value.trim()){
+    alert("請輸入帳號");
+    isPass = false;
+  }
+  if (!password.value.trim()){
+    alert("請輸入密碼");
+    isPass = false;
+  }
+  if (password.value.trim().length < 8){
+    alert("密碼不得低於 8 字元");
+    isPass = false;
+  }
+  return isPass;
+}
+async function login() {
+  validate()
+  await adminStore.login(account.value.trim(), password.value.trim());
+}
+async function signup() {
+  validate();
+  await adminStore.signup(account.value.trim(), password.value.trim());
 }
 </script>
 
