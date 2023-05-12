@@ -24,5 +24,8 @@ export interface IPost {
     rejectReason: string;
     createdAt: string;
     updatedAt: string;
-    updateUser: string;
+    updateUser: {
+        _id: string,
+        account: string
+    };
 }
