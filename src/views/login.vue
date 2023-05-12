@@ -52,15 +52,15 @@ const password = ref<string>('');
 
 function validate(): boolean{
   if (!account.value.trim()){
-    showInfo("請輸入帳號");
+    showInfo("提示", "請輸入帳號");
     return false;
   }
   if (!password.value.trim()){
-    showInfo("請輸入密碼");
+    showInfo("提示", "請輸入密碼");
     return false;
   }
   if (password.value.trim().length < 8){
-    showInfo("密碼不得低於 8 字元");
+    showInfo("提示", "密碼不得低於 8 字元");
     return false;
   }
   return true;

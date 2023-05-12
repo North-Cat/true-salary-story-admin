@@ -10,7 +10,7 @@
         bg-black-3 bg-opacity-50
         "
     >
-        <div class="max-w-lg p-6 bg-white rounded-md shadow-xl">
+        <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
             <div class="flex items-center justify-between">
                 <h4>{{ dialogStore.dialogInfo.title }}</h4>
                 <button
@@ -26,13 +26,13 @@
                 </p>
                 <div class="flex justify-end">
                     <button 
-                    @click="dialogStore.dialogInfo.confirmFunc, dialogStore.close()"
+                    @click="dialogStore.dialogInfo.confirmFunc(), dialogStore.close()"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10">
                     {{ dialogStore.dialogInfo.confirmText }}
                     </button>
                     <button
                     v-if="dialogStore.dialogInfo.showCancel"
-                    @click="dialogStore.dialogInfo.cancelFunc, dialogStore.close()"
+                    @click="dialogStore.dialogInfo.cancelFunc? dialogStore.dialogInfo.cancelFunc() : undefined, dialogStore.close()"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-blue fill-blue bg-white border border-blue hover:bg-blue-light ms-5"
                     >
                     {{ dialogStore.dialogInfo.cancelText }}

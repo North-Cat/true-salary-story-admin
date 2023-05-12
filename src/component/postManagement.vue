@@ -196,12 +196,12 @@
                 </div>
                 <div class="flex justify-end ">
                     <button 
-                    
+                    @click="openConfirmPost()"
                     class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded mr-5">
                     通過
                     </button>
                     <button 
-                    
+                    @click="isRejectModalOpen = true;"
                     class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10 rounded">
                     拒絕
                     </button>
@@ -239,6 +239,55 @@
         </div>
     </div>
 
+
+    <!-- 拒絕原因 Modal -->
+    <div
+        v-if="isRejectModalOpen"
+        class="
+        fixed
+        inset-0
+        flex
+        items-center
+        justify-center
+        bg-black-3 bg-opacity-50
+        "
+    >
+        <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
+            <div class="flex items-center justify-between">
+                <h4>提示</h4>
+                <button
+                class="px-2 py-1 text-sm tracking-widest"
+                @click="isRejectModalOpen = false"
+                >
+                <i class="icon-cross text-lg"></i>
+                </button>
+            </div>
+            <div class="mt-4">
+                <p class="mb-4 body">
+                請輸入拒絕原因 (100 字以內)：
+                </p>
+                <textarea 
+                v-model="rejectReason"
+                class="border-2 border-black-1 mb-5" 
+                rows="4" cols="55" maxlength="100">
+                </textarea>
+                <div class="flex justify-end">
+                    <button 
+                    @click="rejectPost(), isRejectModalOpen = false"
+                    class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10">
+                    確認拒絕
+                    </button>
+                    <button
+                    @click="isRejectModalOpen = false"
+                    class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-blue fill-blue bg-white border border-blue hover:bg-blue-light ms-5"
+                    >
+                    取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script setup lang="ts">
@@ -246,6 +295,7 @@ import { ref, onMounted, computed } from 'vue';
 import type { IPost } from '@/interface/IPost';
 import Axios from 'axios';
 import { showInfo, showSuccess, showError} from "@/utilities/message";
+import { openConfirmModal } from '@/utilities/dialog';
 
 // 未審核
 const curUnconfirmPost = ref<IPost>(); // 目前選到的未審核物件
@@ -259,22 +309,16 @@ onMounted(() => {
 function selectCurPost(post : IPost){
     curUnconfirmPost.value = post;
 }
-async function initUnconfirmPost() {
+async function getUnconfirmedPosts(){
     // call 取得未審核 api
     await Axios.get('http://localhost:3000/api/admin/unconfirmedPosts')
     .then((response) => {
         unconfirmedPosts.value = response.data.data;
-        // 清空目前選擇的資訊
-        curUnconfirmPost.value = undefined;
     })
     .catch((error) => {
     console.log(error);
-    console.log(`取得未審核薪資失敗：${error.response.data.message}`);
+    showError("取得未審核薪資失敗", error.response.data.message);
     })
-
-    showInfo("請輸入身分證字號。");
-    showError("請輸入身分證字號。請輸入身分證字號。請輸入身分證字號。請輸入身分證字號。請輸入身分證字號。");
-    showSuccess("請輸入身分證字號。");
 }
 
 // 審核內容
@@ -387,8 +431,54 @@ const numberRange = computed(() => (number:number) => {
     return text;
 });
 
+// 開啟是否審核通過 Modal
+function openConfirmPost(){
+    openConfirmModal("提示", "確定通過此薪資分享？", confirmPost);
+}
+// 確定審核
+async function confirmPost(){
+    // call 審核 api
+    await Axios.post(`http://localhost:3000/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
+        status: PostStatus.APPROVED
+    })
+    .then((response) => {
+        showSuccess("審核成功", '');
+        // 重新取得未審核清單
+        initUnconfirmPost();
+    })
+    .catch((error) => {
+    console.log(error);
+    showError("審核失敗", error.response.data.message);
+    })
+}
+
+// 開啟審核拒絕原因 Modal
+const isRejectModalOpen = ref(false);
+// 拒絕原因
+const rejectReason = ref();
+// 拒絕審核
+async function rejectPost(){
+    // call 審核 api
+    await Axios.post(`http://localhost:3000/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
+        status: PostStatus.REJECTED,
+        rejectReason: rejectReason.value
+    })
+    .then((response) => {
+        showSuccess("拒絕成功", '');
+        // 重新取得未審核清單
+        initUnconfirmPost();
+    })
+    .catch((error) => {
+    console.log(error);
+    showError("審核失敗", error.response.data.message);
+    })
+}
 
 // 共用
+enum PostStatus {
+    APPROVED = 'approved',
+    REJECTED = 'rejected',
+}
 enum Tab {
     UNCONFIRMED = 'unconfirmed',
     CONFIRMED = 'confirmed',
@@ -410,4 +500,12 @@ const title = computed(() => {
     }
     return title;
 });
+async function initUnconfirmPost() {
+    // 取得未審核清單
+    await getUnconfirmedPosts();
+    // 清空目前選擇的資訊
+    curUnconfirmPost.value = undefined;
+    // 清空拒絕原因
+    rejectReason.value = undefined;
+}
 </script>

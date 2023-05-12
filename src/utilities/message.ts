@@ -1,25 +1,25 @@
 import { useNotification } from "@kyvg/vue3-notification";
 const { notify }  = useNotification();
 
-export function showInfo(text:string, title?:string) {
+export function showInfo(title:string, text:string) {
     notify({
-        title: title? title : undefined,
+        title: title,
         text: text,
         type: 'info'
     });
 };
 
-export function showError(text:string, title?:string) {
+export function showError(title:string, text:string) {
     notify({
-        title: title? title : undefined,
+        title: title,
         text: text,
         type: 'error'
     });
 };
 
-export function showSuccess(text:string, title?:string) {
+export function showSuccess(title:string, text:string) {
     notify({
-        title: title? title : undefined,
+        title: title,
         text: text,
         type: 'success'
     });

@@ -383,7 +383,6 @@ function promptOpen(){
     // 使用 utilities 的 dialog 開啟視窗
     let title = "標題2";
     let message = "內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文2";
-    console.log(title, message);
     openPromptModal(title, message, confirmFunc);
 }
 function confirmFunc(){

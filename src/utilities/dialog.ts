@@ -13,7 +13,7 @@ import { useDialogStore } from '@/stores/dialog';
  * @param {*} cancelText        取消按鈕文字 預設「取消」
  * @param {*} showCancelBtn     是否顯示 Cancel Button
  */
-function openDefaultDialog(showCancelBtn:boolean, title:string, message:string, confirmFunc:Function, cancelFunc?:Function, confirmText?:string, cancelText?:string) {
+function openDefaultDialog(showCancelBtn:boolean, title:string, message:string, confirmFunc?:Function, cancelFunc?:Function, confirmText?:string, cancelText?:string) {
     let dialogInfo = {
         showCancel: showCancelBtn,
         title: title,
@@ -24,20 +24,21 @@ function openDefaultDialog(showCancelBtn:boolean, title:string, message:string, 
         confirmFunc: confirmFunc
     }
     const dialogStore = useDialogStore();
-    dialogStore.dialogInfo = dialogInfo; // 將視窗資訊存入 store
+    // 將視窗資訊存入 store
+    dialogStore.dialogInfo = dialogInfo; 
     dialogStore.open(); // 開啟視窗
 };
 
 /**
  * @description  有確認、取消的 Modal
  */
-export function openConfirmModal(title:string, message:string, confirmFunc:Function, cancelFunc:Function, confirmText?:string, cancelText?:string){
+export function openConfirmModal(title:string, message:string, confirmFunc:Function, cancelFunc?:Function, confirmText?:string, cancelText?:string){
     openDefaultDialog(true, title, message, confirmFunc, cancelFunc, confirmText, cancelText);
 }
 
 /**
  * @description  只有確認的 Modal
  */
-export function openPromptModal(title:string, message:string, confirmFunc:Function, confirmText?:string){
+export function openPromptModal(title:string, message:string, confirmFunc?:Function, confirmText?:string){
     openDefaultDialog(false, title, message, confirmFunc, undefined, confirmText, undefined);
 }
