@@ -1,0 +1,50 @@
+<template>
+    <div
+        v-if="dialogStore.isOpen"
+        class="
+        fixed
+        inset-0
+        flex
+        items-center
+        justify-center
+        bg-black-3 bg-opacity-50
+        "
+    >
+        <div class="max-w-lg p-6 bg-white rounded-md shadow-xl">
+            <div class="flex items-center justify-between">
+                <h4>{{ dialogStore.dialogInfo.title }}</h4>
+                <button
+                class="px-2 py-1 text-sm tracking-widest"
+                @click="dialogStore.close()"
+                >
+                <i class="icon-cross text-lg"></i>
+                </button>
+            </div>
+            <div class="mt-4">
+                <p class="mb-4 body">
+                {{ dialogStore.dialogInfo.message }}
+                </p>
+                <div class="flex justify-end">
+                    <button 
+                    @click="dialogStore.dialogInfo.confirmFunc, dialogStore.close()"
+                    class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10">
+                    {{ dialogStore.dialogInfo.confirmText }}
+                    </button>
+                    <button
+                    v-if="dialogStore.dialogInfo.showCancel"
+                    @click="dialogStore.dialogInfo.cancelFunc, dialogStore.close()"
+                    class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-blue fill-blue bg-white border border-blue hover:bg-blue-light ms-5"
+                    >
+                    {{ dialogStore.dialogInfo.cancelText }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script setup lang="ts">
+import { ref } from "vue";
+import { useDialogStore } from '@/stores/dialog';
+const dialogStore = useDialogStore();
+</script>

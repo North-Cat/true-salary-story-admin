@@ -283,11 +283,82 @@
                 </div>
             </div>
         </div>
+
+        <div class="container mx-auto max-w-7xl flex flex-col pt-10">
+            <div class="mb-1 text-stone-600">Component</div>
+                <div class="py-10 bg-white px-10">
+                    <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-5">
+                    <div class="w-full sm:w-2/12 px-2">
+                    </div>
+                    <div class="w-full sm:w-6/12 px-2">
+                        <div class="flex flex-row justify-center ">
+                        <h4>Default / Hover / Pressed</h4>
+                        </div>
+                    </div>
+                    <div class="w-full sm:w-4/12 px-2">
+                        <div class="flex flex-row justify-center">
+                        <h4>使用方法</h4>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10 ">
+                        <div class="w-full sm:w-2/12 px-2">
+                            <h4 class="h4 ms-10">Button</h4>
+                        </div>
+                        <div class="w-full sm:w-6/12 px-2">
+                            <div class="flex flex-col justify-center items-center mb-6 ">
+                                <button
+                                    @click="confirmOpen"
+                                    class="mb-5 px-6 py-2 text-white bg-blue rounded shadow"
+                                    type="button"
+                                >
+                                    Open confirmOpen
+                                </button>
+                                <button
+                                    @click="promptOpen"
+                                    class="px-6 py-2 text-white bg-blue rounded shadow"
+                                    type="button"
+                                >
+                                    Open promptOpen
+                                </button>
+                            </div>
+                        </div>
+                        <div class="w-full sm:w-4/12 px-2">
+                            <div class="flex flex-col justify-center items-start">
+                            <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll">
+                                <pre><code>
+js:
+import { openConfirmModal, openPromptModal } from "@/utilities/dialog";
+
+// 開啟有 "確定" 跟 "取消" 按鈕的彈出視窗
+openConfirmModal(title, message, confirmFunc, cancelFunc);
+
+// 開啟有 "確定"按鈕的彈出視窗
+openPromptModal(title, message, confirmFunc);
+
+
+參數說明:
+title: 
+    標題, 傳入 String
+message: 
+    內容, 傳入 String
+confirmFunc: 
+    確認方法, 傳入 Function | undefined , 點擊確定會觸發此方法並關閉視窗
+    cancelFunc: 
+    取消方法, 傳入 Function | undefined , 點擊取消會觸發此方法並關閉視窗
+                                        </code></pre>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { openConfirmModal, openPromptModal } from "@/utilities/dialog";
 
 const h1Code = ref('<h1>Title / H1</h1>');
 const h2Code = ref('<h2>Title / H2</h2>');
@@ -298,5 +369,28 @@ const h6Code = ref('<h6>Title / H6</h6>');
 const bodyCode = ref('<div class="body">Title / Body.20</div>');
 const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
 const captionCode = ref('<div class="caption">Title / Caption</div>');
+
+const isOpen = ref(false);
+const isOpen2 = ref(false);
+
+function confirmOpen(){
+    // 使用 utilities 的 dialog 開啟視窗
+    let title = "標題";
+    let message = "內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文";
+    openConfirmModal(title, message, confirmFunc, cancelFunc);
+}
+function promptOpen(){
+    // 使用 utilities 的 dialog 開啟視窗
+    let title = "標題2";
+    let message = "內文內文內文內文內文內文內文內文內文內文內文內文內文內文內文2";
+    console.log(title, message);
+    openPromptModal(title, message, confirmFunc);
+}
+function confirmFunc(){
+    console.log("觸發確定按鈕");
+}
+function cancelFunc(){
+    console.log("觸發取消按鈕");
+}
 
 </script>

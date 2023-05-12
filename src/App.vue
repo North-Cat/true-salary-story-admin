@@ -1,10 +1,15 @@
 <template>
   <router-view></router-view>
+  <!-- 通知 -->
+  <notifications position="top right" class="my-notification" :duration="3000" :max="5"/>
+  <!-- modal -->
+  <default-modal></default-modal>
 </template>
 
 <script setup lang="ts">
 import router from './router';
 import { useAdminStore } from '@/stores/admin';
+import defaultModal from '@/component/defaultModal.vue';
 
 router.beforeEach((to, from, next) => {
   const adminStore = useAdminStore();
