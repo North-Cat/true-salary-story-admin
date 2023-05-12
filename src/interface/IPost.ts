@@ -1,5 +1,5 @@
 export interface IPost {
-    postId: string;
+    _id: string;
     title: string;
     companyName: string;
     taxId: string;
@@ -15,11 +15,11 @@ export interface IPost {
     holidayBonus: number;
     profitSharingBonus: number;
     otherBonus: number;
-    overtime: string;
-    feeling: string;
+    overtime: number;
+    feeling: number;
     jobDescription: string;
     suggestion: string;
     tags: string[];
     status: string;
-    createDate: string;
+    createdAt: string;
 }

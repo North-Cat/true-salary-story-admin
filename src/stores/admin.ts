@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import Axios from 'axios';
+import { showInfo, showError, showSuccess } from "@/utilities/message";
 
 
 export const useAdminStore = defineStore('admin', {
@@ -27,7 +28,7 @@ export const useAdminStore = defineStore('admin', {
       })
       .catch((error) => {
         console.log(error);
-        console.log(`註冊失敗：${error.response.data.message}`);
+        showError(`註冊失敗：${error.response.data.message}`);
       });
     },
     async login(account: string, password: string) {
@@ -45,7 +46,7 @@ export const useAdminStore = defineStore('admin', {
       })
       .catch((error) => {
         console.log(error);
-        console.log(`登入失敗：${error.response.data.message}`);
+        showError(`登入失敗：${error.response.data.message}`);
       });
     },
     async logout() {
@@ -59,7 +60,7 @@ export const useAdminStore = defineStore('admin', {
       })
       .catch((error) => {
         console.log(error);
-        console.log(`登出失敗：${error.response.data.message}`);
+        showError(`登出失敗：${error.response.data.message}`);
       });
     },
   }

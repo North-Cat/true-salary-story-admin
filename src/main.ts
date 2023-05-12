@@ -6,6 +6,7 @@ import type { Router } from 'vue-router'
 import App from './App.vue'
 import router from './router'
 import ajax from './utilities/ajax'
+import Notifications from '@kyvg/vue3-notification'
 
 import './assets/css/main.css'
 import './assets/css/icon.css'
@@ -26,5 +27,6 @@ pinia.use(Persistedstate);
 
 app.use(pinia)
 app.use(router)
+app.use(Notifications)
 
 app.mount('#app')

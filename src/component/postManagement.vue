@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="post in unconfirmedPosts" :key="post.postId">
+                    <tr v-for="post in unconfirmedPosts" :key="post._id">
                         <td>
                             <button
                                 class="flex py-3 px-5 justify-center items-center transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded"
@@ -48,7 +48,7 @@
                         <td>{{ post.companyName }}</td>
                         <td>{{ post.title }}</td>
                         <td>{{ post.type }}</td>
-                        <td>{{ post.createDate }}</td>
+                        <td>{{ post.createdAt }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -69,7 +69,7 @@
                                 <span class="caption text-black-6 px-3">|</span>
                                 <div class="caption text-black-6">{{ curUnconfirmPost.city }}</div>
                                 <span class="caption text-black-6 px-3">|</span>
-                                <div class="caption text-black-6">{{ curUnconfirmPost.createDate + ' 分享' }}</div>
+                                <div class="caption text-black-6">{{ curUnconfirmPost.createdAt + ' 分享' }}</div>
                             </div>
                         </div>
                     </div>
@@ -83,8 +83,7 @@
                                     </div>
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">月薪</div>
-                                        <!-- TODO 數值 computed 成範圍 -->
-                                        <h6>70-71k</h6> 
+                                        <h6>{{ numberRange(curUnconfirmPost.monthlySalary) }}</h6> 
                                     </div>
                                 </div>
                                 <div class="w-full flex justify-start items-center">
@@ -93,8 +92,7 @@
                                     </div>
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">年薪</div>
-                                        <!-- TODO 數值 computed 成範圍 -->
-                                        <h6>980-990k</h6> 
+                                        <h6>{{ numberRange(curUnconfirmPost.yearlySalary) }}</h6> 
                                     </div>
                                 </div>
                             </div>
@@ -102,29 +100,25 @@
                                 <div class="w-full flex justify-start items-center">
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">年終</div>
-                                        <!-- TODO 數值 computed 成範圍 -->
-                                        <h6>-</h6> 
+                                        <h6>{{ numberRange(curUnconfirmPost.yearEndBonus) }}</h6> 
                                     </div>
                                 </div>
                                 <div class="w-full flex justify-start items-center">
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">三節</div>
-                                        <!-- TODO 數值 computed 成範圍 -->
-                                        <h6>-</h6> 
+                                        <h6>{{ numberRange(curUnconfirmPost.holidayBonus) }}</h6> 
                                     </div>
                                 </div>
                                 <div class="w-full flex justify-start items-center">
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">分紅</div>
-                                        <!-- TODO 數值 computed 成範圍 -->
-                                        <h6>-</h6> 
+                                        <h6>{{ numberRange(curUnconfirmPost.profitSharingBonus) }}</h6> 
                                     </div>
                                 </div>
                                 <div class="w-full flex justify-start items-center">
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">其他</div>
-                                        <!-- TODO 數值 computed 成範圍 -->
-                                        <h6>-</h6> 
+                                        <h6>{{ numberRange(curUnconfirmPost.otherBonus) }}</h6> 
                                     </div>
                                 </div>
                             </div>
@@ -250,6 +244,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import type { IPost } from '@/interface/IPost';
+import Axios from 'axios';
+import { showInfo, showSuccess, showError} from "@/utilities/message";
 
 // 未審核
 const curUnconfirmPost = ref<IPost>(); // 目前選到的未審核物件
@@ -263,149 +259,135 @@ onMounted(() => {
 function selectCurPost(post : IPost){
     curUnconfirmPost.value = post;
 }
-function initUnconfirmPost() {
+async function initUnconfirmPost() {
     // call 取得未審核 api
-    unconfirmedPosts.value = [
-        {
-            postId: "Post1234",
-			title: "工程師",
-			companyName: "卯咪股份有限公司",
-			taxId: "87654321",
-			type: "全職",
-			inService: true,
-			city: "台北",
-			workYears: 1,
-			totalWorkYears: 5,
-			avgHoursPerDay: 8,
-			monthlySalary: 40000,
-			yearlySalary: 480000,
-			yearEndBonus: 40000,
-			holidayBonus: 2000,
-			profitSharingBonus: 2000,
-			otherBonus: 2000,
-			overtime: "4",
-			feeling: "3",
-			jobDescription: "對於資深設計師來說可以學習到很多管理上及處事合作上的工作方法，也練習如何在草創環境中執行製作且時程緊迫的專案中完成任務， 會是一個執得學習的場所。",	
-            suggestion: "印象最深的是老闆會親自舉辦很多工作坊，對於職場新鮮人或是職場老手都很有收穫，公司重視提升軟實力，很建議對自己有要求，想要自我提升的人來此公司。",
-			tags: ["有升遷管道", "固定加薪", "免費零食/水果", "固定加薪", "免費零食/水果", "固定加薪", "免費零食/水果", "固定加薪", "免費零食/水果", "固定加薪", "免費零食/水果", "固定加薪", "免費零食/水果"],
-			status: "待審核",
-			createDate: "2023.4.12",
-		},
-		{
-			postId: "Post1234",
-			title: "工程師2",
-			companyName: "卯咪股份有限公司",
-			taxId: "87654321",
-			type: "全職",
-			inService: true,
-			city: "台北",
-			workYears: 1,
-			totalWorkYears: 5,
-			avgHoursPerDay: 8,
-			monthlySalary: 40000,
-			yearlySalary: 480000,
-			yearEndBonus: 40000,
-			holidayBonus: 2000,
-			profitSharingBonus: 2000,
-			otherBonus: 2000,
-			overtime: "1",
-			feeling: "1",
-			jobDescription: "主要是前後端開發，我們團隊使用 Vue + Java，也有其他團隊使用 React、Angular、.Net 等等。",	
-            suggestion: "印象最深的是老闆會親自舉辦很多工作坊，對於職場新鮮人或是職場老手都很有收穫，公司重視提升軟實力，很建議對自己有要求，想要自我提升的人來此公司。",
-			tags: ["有升遷管道", "固定加薪", "免費零食/水果"],
-			status: "待審核",
-			createDate: "2023.4.12",
-		},
-	]
-    // 清空目前選擇的資訊
-    curUnconfirmPost.value = undefined;
+    await Axios.get('http://localhost:3000/api/admin/unconfirmedPosts')
+    .then((response) => {
+        unconfirmedPosts.value = response.data.data;
+        // 清空目前選擇的資訊
+        curUnconfirmPost.value = undefined;
+    })
+    .catch((error) => {
+    console.log(error);
+    console.log(`取得未審核薪資失敗：${error.response.data.message}`);
+    })
+
+    showInfo("請輸入身分證字號。");
+    showError("請輸入身分證字號。請輸入身分證字號。請輸入身分證字號。請輸入身分證字號。請輸入身分證字號。");
+    showSuccess("請輸入身分證字號。");
 }
 
 // 審核內容
-const feelingText = computed(() => (id:string) => {
+const feelingText = computed(() => (id:number) => {
     let text = '';
     switch(id){
-        case '1' :
+        case 1 :
             text = '非常開心';
             break;
-        case '2' :
+        case 2 :
             text = '還算愉快';
             break;
-        case '3' :
+        case 3 :
             text = '平常心';
             break;
-        case '4' :
+        case 4 :
             text = '有苦說不出';
             break;
-        case '5' :
+        case 5 :
             text = '想換工作了';
             break;
     }
     return text;
 });
-const feelingClass = computed(() => (id:string) => {
+const feelingClass = computed(() => (id:number) => {
     let className = '';
     switch(id){
-        case '1' :
+        case 1 :
             className = 'icon-face-good text-green';
             break;
-        case '2' :
+        case 2 :
             className = 'icon-face-good text-green';
             break;
-        case '3' :
+        case 3 :
             className = 'icon-face-normal text-yellow';
             break;
-        case '4' :
+        case 4 :
             className = 'icon-face-bad text-red';
             break;
-        case '5' :
+        case 5 :
             className = 'icon-face-bad text-red';
             break;
     }
     return className;
 });
-const overtimeText = computed(() => (id:string) => {
+const overtimeText = computed(() => (id:number) => {
     let text = '';
     switch(id){
-        case '1' :
+        case 1 :
             text = '準時上下班';
             break;
-        case '2' :
+        case 2 :
             text = '很少加班';
             break;
-        case '3' :
+        case 3 :
             text = '偶爾加班';
             break;
-        case '4' :
+        case 4 :
             text = '常常加班';
             break;
-        case '5' :
+        case 5 :
             text = '賣肝拼經濟';
             break;
     }
     return text;
 });
-const overtimeClass = computed(() => (id:string) => {
+const overtimeClass = computed(() => (id:number) => {
     let className = '';
     switch(id){
-        case '1' :
+        case 1 :
             className = 'icon-time-good text-green';
             break;
-        case '2' :
+        case 2 :
             className = 'icon-time-good text-green';
             break;
-        case '3' :
+        case 3 :
             className = 'icon-time-normal text-yellow';
             break;
-        case '4' :
+        case 4 :
             className = 'icon-time-bad text-red';
             break;
-        case '5' :
+        case 5 :
             className = 'icon-time-bad text-red';
             break;
     }
     return className;
 });
+const numberRange = computed(() => (number:number) => {
+    let text = '-';
+    let range = 0
+    if (number >= 100000){
+        // 若為六位數，範圍間距為 10k
+        range = 10000;
+    }else if (number >= 1000 && number < 100000){
+        // 若為四、五位數，範圍間距為 1k
+        range = 1000;
+    }
+    
+    let max = Math.ceil(number/range); // ceil 回傳大於等於所給數字的最大整數
+    let min = Math.floor(number/range); // floor 回傳小於等於所給數字的最大整數
+    max = min == max? max+=1 : max; // 若為整數 (例 40000) 依上述寫法會變成 40-40k， 則將上限加 1k 變為 40-41k
+
+    if (number >= 100000){
+        text = `${min*10} - ${max*10}k`
+    }else if (number >= 1000 && number < 100000){
+        text = `${min} - ${max}k`
+    }else if (number > 0 && number <1000){
+        text = '低於 1k'
+    }
+    return text;
+});
+
+
 // 共用
 enum Tab {
     UNCONFIRMED = 'unconfirmed',

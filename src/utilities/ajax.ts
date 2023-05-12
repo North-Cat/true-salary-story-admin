@@ -15,7 +15,7 @@ Axios.interceptors.request.use(function (config) {
 	return Promise.reject(error);
 });
 
-const AjaxService = {
+const AjaxUtil = {
 	/* ajax post */
 	async post(actionName:string, url:string, data:object, callBack:Function, errorCallBack:Function, urlParam?:object) {
 		Axios.post(`${url}`, data, {
@@ -38,4 +38,4 @@ const AjaxService = {
 	},
 };
 
-export default AjaxService;
+export default AjaxUtil;

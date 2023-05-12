@@ -43,6 +43,7 @@
 import { useAdminStore } from '@/stores/admin';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router'
+import { showInfo,showError,showSuccess } from "@/utilities/message";
 
 const router = useRouter()
 const adminStore = useAdminStore();
@@ -50,27 +51,30 @@ const account = ref<string>('');
 const password = ref<string>('');
 
 function validate(): boolean{
-  let isPass = true;
   if (!account.value.trim()){
-    alert("請輸入帳號");
-    isPass = false;
+    showInfo("請輸入帳號");
+    return false;
   }
   if (!password.value.trim()){
-    alert("請輸入密碼");
-    isPass = false;
+    showInfo("請輸入密碼");
+    return false;
   }
   if (password.value.trim().length < 8){
-    alert("密碼不得低於 8 字元");
-    isPass = false;
+    showInfo("密碼不得低於 8 字元");
+    return false;
   }
-  return isPass;
+  return true;
 }
 async function login() {
-  validate()
+  if (!validate()){
+    return;
+  }
   await adminStore.login(account.value.trim(), password.value.trim());
 }
 async function signup() {
-  validate();
+  if (!validate()){
+    return;
+  }
   await adminStore.signup(account.value.trim(), password.value.trim());
 }
 </script>

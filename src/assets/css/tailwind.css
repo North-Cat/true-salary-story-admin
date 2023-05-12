@@ -65,3 +65,18 @@
         @apply border-b border-b-black-5 py-5
     }
 }
+
+@layer utilities {
+    .my-notification .vue-notification {
+        @apply m-1 p-5 caption rounded bg-white text-black-10 shadow-md;
+    }
+    .my-notification .vue-notification.info {
+        @apply border-l-8 border-black-6;
+    }
+    .my-notification .vue-notification.success {
+        @apply border-l-8 border-green;
+    }
+    .my-notification .vue-notification.error {
+        @apply border-l-8 border-red;
+    }
+}
