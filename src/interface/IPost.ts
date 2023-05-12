@@ -21,5 +21,8 @@ export interface IPost {
     suggestion: string;
     tags: string[];
     status: string;
+    rejectReason: string;
     createdAt: string;
+    updatedAt: string;
+    updateUser: string;
 }
