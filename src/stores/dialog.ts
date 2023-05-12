@@ -6,8 +6,8 @@ state: () => {
     return {
         isOpen: false,
         dialogInfo: {
-            showCancel: "",
-            title: "",
+            showCancel: false,
+            title: "提示",
             message: "",
             cancelText: '取消',
             confirmText: '確認',
