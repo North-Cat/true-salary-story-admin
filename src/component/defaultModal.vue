@@ -26,7 +26,7 @@
                 </p>
                 <div class="flex justify-end">
                     <button 
-                    @click="dialogStore.dialogInfo.confirmFunc(), dialogStore.close()"
+                    @click="dialogStore.dialogInfo.confirmFunc? dialogStore.dialogInfo.confirmFunc() : undefined, dialogStore.close()"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10">
                     {{ dialogStore.dialogInfo.confirmText }}
                     </button>

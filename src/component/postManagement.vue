@@ -9,17 +9,18 @@
             <div class="w-full flex ">
                 <div class="py-3 pe-6">
                     <button
-                        :class="{'border-b-2 text-blue border-b-blue' : isTab(Tab.UNCONFIRMED)}"
-                        class="pb-2 border-b-2 border-b-transparent hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+                        :class="tabClass(Tab.UNCONFIRMED)"
+                        class="pb-2 border-b-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
                         @click="changeTab(Tab.UNCONFIRMED), initUnconfirmPost()">
                         <h6>{{ `待審核( ${unconfirmedPostsCount} )` }}</h6>
                     </button>
                 </div>
                 <div class="py-3 pe-6">
                     <button
-                        :class="{'border-b-2 text-blue border-b-blue' : isTab(Tab.CONFIRMED)}"
-                        class="pb-2 border-b-2 border-b-transparent hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-                        @click="changeTab(Tab.CONFIRMED)">
+                        :class="tabClass(Tab.CONFIRMED)"
+                        class="pb-2 border-b-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+                        @click="changeTab(Tab.CONFIRMED),
+                        initConfirmedPost()">
                         <h6>已審核</h6>
                     </button>
                 </div>
@@ -217,22 +218,37 @@
                         <th>公司名稱</th>
                         <th>應徵職務</th>
                         <th>職務類別</th>
-                        <th>建立日期</th>
+                        <th>更新日期</th>
+                        <th>更新人員</th>
+                        <th>拒絕原因</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr v-for="post in confirmedPosts" :key="post._id">
                         <td>
                             <button
+                                v-if="post.status == PostStatus.APPROVED"
+                                @click="clickRemovePost(post._id)"
                                 class="flex py-3 px-5 justify-center items-center transition duration-300 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10 rounded">
                                 下架
                             </button>
                         </td>
-                        <td>通過</td>
-                        <td>城市創意有限公司</td>
-                        <td>前端工程師</td>
-                        <td>全職</td>
-                        <td>2023/3/16</td>
+                        <td>{{ statusText(post.status) }}</td>
+                        <td>{{ post.companyName }}</td>
+                        <td>{{ post.title }}</td>
+                        <td>{{ post.type }}</td>
+                        <td>{{ post.updatedAt }}</td>
+                        <td>{{ post.updateUser.account }}</td>
+                        <td>
+                            <div class="flex justify-center">
+                                <button 
+                                v-if="post.rejectReason"
+                                @click="openRejectReasonModal(post.rejectReason)"
+                                >
+                                    <div class="icon-file text-2xl text-black-6"></div>
+                                </button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -288,6 +304,54 @@
         </div>
     </div>
 
+    <!-- 下架原因 Modal -->
+    <div
+        v-if="isRemoveModalOpen"
+        class="
+        fixed
+        inset-0
+        flex
+        items-center
+        justify-center
+        bg-black-3 bg-opacity-50
+        "
+    >
+        <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
+            <div class="flex items-center justify-between">
+                <h4>提示</h4>
+                <button
+                class="px-2 py-1 text-sm tracking-widest"
+                @click="isRemoveModalOpen = false"
+                >
+                <i class="icon-cross text-lg"></i>
+                </button>
+            </div>
+            <div class="mt-4">
+                <p class="mb-4 body">
+                請輸入下架原因 (100 字以內)：
+                </p>
+                <textarea 
+                v-model="removeReason"
+                class="border-2 border-black-1 mb-5" 
+                rows="4" cols="55" maxlength="100">
+                </textarea>
+                <div class="flex justify-end">
+                    <button 
+                    @click="removePost(), isRemoveModalOpen = false"
+                    class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10">
+                    確認拒絕
+                    </button>
+                    <button
+                    @click="initConfirmedPost(), isRemoveModalOpen = false"
+                    class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-blue fill-blue bg-white border border-blue hover:bg-blue-light ms-5"
+                    >
+                    取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script setup lang="ts">
@@ -295,9 +359,11 @@ import { ref, onMounted, computed } from 'vue';
 import type { IPost } from '@/interface/IPost';
 import Axios from 'axios';
 import { showInfo, showSuccess, showError} from "@/utilities/message";
-import { openConfirmModal } from '@/utilities/dialog';
+import { openConfirmModal, openPromptModal } from '@/utilities/dialog';
 
-// 未審核
+/**
+ * 待審核相關
+ */
 const curUnconfirmPost = ref<IPost>(); // 目前選到的未審核物件
 const unconfirmedPosts = ref<IPost[]>([]);
 const unconfirmedPostsCount = computed(() => {
@@ -473,8 +539,90 @@ async function rejectPost(){
     showError("審核失敗", error.response.data.message);
     })
 }
+// 待審核頁面初始化
+async function initUnconfirmPost() {
+    // 取得未審核清單
+    await getUnconfirmedPosts();
+    // 清空目前選擇的資訊
+    curUnconfirmPost.value = undefined;
+    // 清空拒絕原因
+    rejectReason.value = undefined;
+}
 
-// 共用
+/**
+ * 已審核相關
+ */
+const confirmedPosts = ref<IPost[]>([]);
+async function getConfirmedPosts(){
+    // call 取得已審核 api
+    await Axios.get('http://localhost:3000/api/admin/confirmedPosts')
+    .then((response) => {
+        confirmedPosts.value = response.data.data;
+    })
+    .catch((error) => {
+    console.log(error);
+    showError("取得已審核薪資失敗", error.response.data.message);
+    })
+}
+const statusText = computed(() => (status:string) => {
+    let text = '';
+    switch(status){
+        case 'approved' :
+            text = '已通過';
+            break;
+        case 'rejected' :
+            text = '已拒絕';
+            break;
+        case 'removed' :
+            text = '已下架';
+            break;
+    }
+    return text;
+});
+function openRejectReasonModal(message:string){
+    openPromptModal("拒絕原因", message);
+}
+
+// 目前選到的已審核文章id
+const curConfirmPostId = ref(); 
+// 下架原因
+const removeReason = ref(); 
+// 開啟下架原因 Modal
+const isRemoveModalOpen = ref(false);
+// 點擊下架
+function clickRemovePost(id:string){
+    curConfirmPostId.value = id;
+    isRemoveModalOpen.value = true;
+}
+async function removePost(){
+    // call 下架 api
+    await Axios.post(`http://localhost:3000/api/admin/removePost/${curConfirmPostId.value}`,{
+        rejectReason: removeReason.value
+    })
+    .then((response) => {
+        showSuccess("下架成功", '');
+        // 重新取得已審核清單
+        initConfirmedPost();
+    })
+    .catch((error) => {
+    console.log(error);
+    showError("審核失敗", error.response.data.message);
+    })
+}
+// 已審核頁面初始化
+async function initConfirmedPost() {
+    // 取得已審核清單
+    await getConfirmedPosts();
+    // // 清空目前選擇的資訊
+    curConfirmPostId.value = undefined;
+    // // 清空下架拒絕原因
+    removeReason.value = undefined;
+}
+
+
+/**
+ * 共用功能
+ */
 enum PostStatus {
     APPROVED = 'approved',
     REJECTED = 'rejected',
@@ -491,6 +639,10 @@ function changeTab(tab: Tab) {
 function isTab(tab: Tab): boolean {
     return curTab.value == tab;
 }
+const tabClass = computed(() => (tab: Tab) => {
+  let className = isTab(tab) ? 'border-b-2 text-blue border-b-blue' : 'border-b-2 border-b-transparent';
+  return className;
+});
 const title = computed(() => {
     let title = '管理匿名分享';
     if (curTab.value == Tab.UNCONFIRMED) {
@@ -500,12 +652,4 @@ const title = computed(() => {
     }
     return title;
 });
-async function initUnconfirmPost() {
-    // 取得未審核清單
-    await getUnconfirmedPosts();
-    // 清空目前選擇的資訊
-    curUnconfirmPost.value = undefined;
-    // 清空拒絕原因
-    rejectReason.value = undefined;
-}
 </script>
