@@ -327,7 +327,7 @@
                             <div class="flex flex-col justify-center items-start">
                             <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll">
                                 <pre><code>
-js:
+在 js :
 import { openConfirmModal, openPromptModal } from "@/utilities/dialog";
 
 // 開啟有 "確定" 跟 "取消" 按鈕的彈出視窗
@@ -346,6 +346,10 @@ confirmFunc:
     確認方法, 傳入 Function | undefined , 點擊確定會觸發此方法並關閉視窗
     cancelFunc: 
     取消方法, 傳入 Function | undefined , 點擊取消會觸發此方法並關閉視窗
+
+====================================================================================
+
+* 若需要客製化彈出視窗內容，可以參考 "@/component/defaultModal.vue" 的樣式
                                         </code></pre>
                             </div>
                             </div>

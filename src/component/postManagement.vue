@@ -3,7 +3,6 @@
         <h5 class="w-full text-white bg-black-10 p-6">
         {{ title }}
         </h5>
-
         <!-- 管理匿名分享 -->
         <div class="w-full flex flex-col p-6">
             <div class="w-full flex ">
@@ -268,7 +267,9 @@
         bg-black-3 bg-opacity-50
         "
     >
-        <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
+        <div 
+        ref="rejectReasonModal"
+        class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
             <div class="flex items-center justify-between">
                 <h4>提示</h4>
                 <button
@@ -289,7 +290,7 @@
                 </textarea>
                 <div class="flex justify-end">
                     <button 
-                    @click="rejectPost(), isRejectModalOpen = false"
+                    @click="rejectPost()"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10">
                     確認拒絕
                     </button>
@@ -316,7 +317,9 @@
         bg-black-3 bg-opacity-50
         "
     >
-        <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
+        <div 
+        ref="removeReasonModal"
+        class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
             <div class="flex items-center justify-between">
                 <h4>提示</h4>
                 <button
@@ -337,9 +340,9 @@
                 </textarea>
                 <div class="flex justify-end">
                     <button 
-                    @click="removePost(), isRemoveModalOpen = false"
+                    @click="removePost()"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10">
-                    確認拒絕
+                    確認下架
                     </button>
                     <button
                     @click="initConfirmedPost(), isRemoveModalOpen = false"
@@ -356,6 +359,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
+import { onClickOutside } from '@vueuse/core'
 import type { IPost } from '@/interface/IPost';
 import Axios from 'axios';
 import { showInfo, showSuccess, showError} from "@/utilities/message";
@@ -522,8 +526,16 @@ async function confirmPost(){
 const isRejectModalOpen = ref(false);
 // 拒絕原因
 const rejectReason = ref();
+const rejectReasonModal = ref(null);
+onClickOutside(rejectReasonModal, () => {
+    isRejectModalOpen.value = false;
+})
 // 拒絕審核
 async function rejectPost(){
+    if (!rejectReason.value || !rejectReason.value.trim()){
+        showInfo("提示", "請輸入原因");
+        return;
+    }
     // call 審核 api
     await Axios.post(`http://localhost:3000/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
         status: PostStatus.REJECTED,
@@ -531,6 +543,7 @@ async function rejectPost(){
     })
     .then((response) => {
         showSuccess("拒絕成功", '');
+        isRejectModalOpen.value = false
         // 重新取得未審核清單
         initUnconfirmPost();
     })
@@ -589,18 +602,28 @@ const curConfirmPostId = ref();
 const removeReason = ref(); 
 // 開啟下架原因 Modal
 const isRemoveModalOpen = ref(false);
+const removeReasonModal = ref(null);
+onClickOutside(removeReasonModal, () => {
+    isRemoveModalOpen.value = false;
+    removeReason.value = undefined;
+})
 // 點擊下架
 function clickRemovePost(id:string){
     curConfirmPostId.value = id;
     isRemoveModalOpen.value = true;
 }
 async function removePost(){
+    if (!removeReason.value || !removeReason.value.trim()){
+        showInfo("提示", "請輸入原因");
+        return;
+    }
     // call 下架 api
     await Axios.post(`http://localhost:3000/api/admin/removePost/${curConfirmPostId.value}`,{
         rejectReason: removeReason.value
     })
     .then((response) => {
         showSuccess("下架成功", '');
+        isRemoveModalOpen.value = false;
         // 重新取得已審核清單
         initConfirmedPost();
     })

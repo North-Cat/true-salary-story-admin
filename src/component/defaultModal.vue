@@ -10,7 +10,9 @@
         bg-black-3 bg-opacity-50
         "
     >
-        <div class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
+        <div 
+        ref="defaultModal"
+        class="w-full max-w-lg p-6 bg-white rounded-md shadow-xl">
             <div class="flex items-center justify-between">
                 <h4>{{ dialogStore.dialogInfo.title }}</h4>
                 <button
@@ -45,6 +47,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { onClickOutside } from '@vueuse/core'
 import { useDialogStore } from '@/stores/dialog';
 const dialogStore = useDialogStore();
+
+const defaultModal = ref(null);
+onClickOutside(defaultModal, () => {
+    dialogStore.close();
+})
+
 </script>
