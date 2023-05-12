@@ -133,7 +133,7 @@
                                     </div>
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">上班心情</div>
-                                        <h6>{{ feelingText(curUnconfirmPost.feeling) }}</h6> 
+                                        <h6>{{ curUnconfirmPost.feeling }}</h6> 
                                     </div>
                                 </div>
                                 <div class="w-full flex justify-start items-center">
@@ -143,7 +143,7 @@
                                         class="text-2xl"></span>                                </div>
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">加班頻率</div>
-                                        <h6>{{ overtimeText(curUnconfirmPost.overtime) }}</h6> 
+                                        <h6>{{ curUnconfirmPost.overtime }}</h6> 
                                     </div>
                                 </div>
                             </div>
@@ -392,85 +392,43 @@ async function getUnconfirmedPosts(){
 }
 
 // 審核內容
-const feelingText = computed(() => (id:number) => {
-    let text = '';
-    switch(id){
-        case 1 :
-            text = '非常開心';
-            break;
-        case 2 :
-            text = '還算愉快';
-            break;
-        case 3 :
-            text = '平常心';
-            break;
-        case 4 :
-            text = '有苦說不出';
-            break;
-        case 5 :
-            text = '想換工作了';
-            break;
-    }
-    return text;
-});
-const feelingClass = computed(() => (id:number) => {
+const feelingClass = computed(() => (text:string) => {
     let className = '';
-    switch(id){
-        case 1 :
+    switch(text){
+        case '非常開心' :
             className = 'icon-face-good text-green';
             break;
-        case 2 :
+        case '還算愉快' :
             className = 'icon-face-good text-green';
             break;
-        case 3 :
+        case '平常心' :
             className = 'icon-face-normal text-yellow';
             break;
-        case 4 :
+        case '有苦說不出' :
             className = 'icon-face-bad text-red';
             break;
-        case 5 :
+        case '想換工作了' :
             className = 'icon-face-bad text-red';
             break;
     }
     return className;
 });
-const overtimeText = computed(() => (id:number) => {
-    let text = '';
-    switch(id){
-        case 1 :
-            text = '準時上下班';
-            break;
-        case 2 :
-            text = '很少加班';
-            break;
-        case 3 :
-            text = '偶爾加班';
-            break;
-        case 4 :
-            text = '常常加班';
-            break;
-        case 5 :
-            text = '賣肝拼經濟';
-            break;
-    }
-    return text;
-});
-const overtimeClass = computed(() => (id:number) => {
+const overtimeClass = computed(() => (text:string) => {
     let className = '';
-    switch(id){
-        case 1 :
+    switch(text){
+        case '準時上下班' :
             className = 'icon-time-good text-green';
             break;
-        case 2 :
+        case '很少加班' :
             className = 'icon-time-good text-green';
             break;
-        case 3 :
+        case '偶爾加班' :
             className = 'icon-time-normal text-yellow';
             break;
-        case 4 :
+        case '常常加班' :
             className = 'icon-time-bad text-red';
             break;
-        case 5 :
+        case '賣肝拼經濟' :
             className = 'icon-time-bad text-red';
             break;
     }
