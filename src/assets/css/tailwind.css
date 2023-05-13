@@ -77,12 +77,12 @@
         @apply text-black-6;
     }
     .my-notification .vue-notification.info {
-        @apply border-l-8 border-black-6;
+        @apply border-l-8 border-black-6 bg-white;
     }
     .my-notification .vue-notification.success {
-        @apply border-l-8 border-green;
+        @apply border-l-8 border-green bg-white;
     }
     .my-notification .vue-notification.error {
-        @apply border-l-8 border-red;
+        @apply border-l-8 border-red bg-white;
     }
 }
