@@ -15,8 +15,8 @@ export interface IPost {
     holidayBonus: number;
     profitSharingBonus: number;
     otherBonus: number;
-    overtime: number;
-    feeling: number;
+    overtime: string;
+    feeling: string;
     jobDescription: string;
     suggestion: string;
     tags: string[];
