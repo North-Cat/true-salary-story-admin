@@ -381,7 +381,7 @@ function selectCurPost(post : IPost){
 }
 async function getUnconfirmedPosts(){
     // call 取得未審核 api
-    await Axios.get('http://localhost:3000/api/admin/unconfirmedPosts')
+    await Axios.get('/api/admin/unconfirmedPosts')
     .then((response) => {
         unconfirmedPosts.value = response.data.data;
     })
@@ -466,7 +466,7 @@ function openConfirmPost(){
 // 確定審核
 async function confirmPost(){
     // call 審核 api
-    await Axios.post(`http://localhost:3000/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
+    await Axios.post(`/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
         status: PostStatus.APPROVED
     })
     .then((response) => {
@@ -495,7 +495,7 @@ async function rejectPost(){
         return;
     }
     // call 審核 api
-    await Axios.post(`http://localhost:3000/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
+    await Axios.post(`/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
         status: PostStatus.REJECTED,
         rejectReason: rejectReason.value
     })
@@ -526,7 +526,7 @@ async function initUnconfirmPost() {
 const confirmedPosts = ref<IPost[]>([]);
 async function getConfirmedPosts(){
     // call 取得已審核 api
-    await Axios.get('http://localhost:3000/api/admin/confirmedPosts')
+    await Axios.get('/api/admin/confirmedPosts')
     .then((response) => {
         confirmedPosts.value = response.data.data;
     })
@@ -576,7 +576,7 @@ async function removePost(){
         return;
     }
     // call 下架 api
-    await Axios.post(`http://localhost:3000/api/admin/removePost/${curConfirmPostId.value}`,{
+    await Axios.post(`/api/admin/removePost/${curConfirmPostId.value}`,{
         rejectReason: removeReason.value
     })
     .then((response) => {

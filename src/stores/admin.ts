@@ -14,7 +14,7 @@ export const useAdminStore = defineStore('admin', {
   persist: true, // 預設將 state 儲存至 localStorage
   actions: {
     async signup(account: string, password: string) {
-      await Axios.post('http://localhost:3000/api/admin/signup', 
+      await Axios.post('/api/admin/signup', 
       {
         account: account,
         password: password
@@ -32,7 +32,7 @@ export const useAdminStore = defineStore('admin', {
       });
     },
     async login(account: string, password: string) {
-      await Axios.post('http://localhost:3000/api/admin/login', 
+      await Axios.post('/api/admin/login', 
       {
         account: account,
         password: password
@@ -50,7 +50,7 @@ export const useAdminStore = defineStore('admin', {
       });
     },
     async logout() {
-      await Axios.post('http://localhost:3000/api/admin/logout')
+      await Axios.post('/api/admin/logout')
       .then((response) => {
         const token = response.data.data.token;
         this.isLogin = false;
