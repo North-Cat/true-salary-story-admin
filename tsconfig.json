@@ -5,7 +5,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "ignoreDeprecations": "5.0",
+    "verbatimModuleSyntax": true,
+    "isolatedModules": true
   },
 
   "references": [

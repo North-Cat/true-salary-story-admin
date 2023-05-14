@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import Axios from 'axios';
+import Axios from '@/utilities/axios';
 import { showInfo, showError, showSuccess } from "@/utilities/message";
 
 

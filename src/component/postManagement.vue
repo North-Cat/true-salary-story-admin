@@ -361,7 +361,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { onClickOutside } from '@vueuse/core'
 import type { IPost } from '@/interface/IPost';
-import Axios from 'axios';
+import Axios from '@/utilities/axios';
 import { showInfo, showSuccess, showError} from "@/utilities/message";
 import { openConfirmModal, openPromptModal } from '@/utilities/dialog';
 
