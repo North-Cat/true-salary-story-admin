@@ -8,12 +8,11 @@
 
 <script setup lang="ts">
 import router from './router';
-import { useAdminStore } from '@/stores/admin';
 import defaultModal from '@/component/defaultModal.vue';
+import { getCookie } from 'typescript-cookie'
 
 router.beforeEach((to, from, next) => {
-  const adminStore = useAdminStore();
-  const isLogin = adminStore.isLogin; // 是否有登入
+  const isLogin = getCookie('token'); // 是否有登入
 
   // 測試用
   if (to.name === 'guideline'){

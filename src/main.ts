@@ -5,7 +5,6 @@ import type { Router } from 'vue-router'
 
 import App from './App.vue'
 import router from './router'
-import ajax from './utilities/ajax'
 import Notifications from '@kyvg/vue3-notification'
 
 import './assets/css/main.css'

@@ -201,7 +201,7 @@
                     通過
                     </button>
                     <button 
-                    @click="isRejectModalOpen = true;"
+                    @click="openRejectModal()"
                     class="flex py-3 px-5 justify-center items-center transition duration-150 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10 rounded">
                     拒絕
                     </button>
@@ -290,7 +290,7 @@
                 </textarea>
                 <div class="flex justify-end">
                     <button 
-                    @click="rejectPost()"
+                    @click="clickRejectPost()"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10">
                     確認拒絕
                     </button>
@@ -340,12 +340,12 @@
                 </textarea>
                 <div class="flex justify-end">
                     <button 
-                    @click="removePost()"
+                    @click="clickConfirmRemovePost()"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10">
                     確認下架
                     </button>
                     <button
-                    @click="initConfirmedPost(), isRemoveModalOpen = false"
+                    @click="isRemoveModalOpen = false"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-blue fill-blue bg-white border border-blue hover:bg-blue-light ms-5"
                     >
                     取消
@@ -488,12 +488,20 @@ const rejectReasonModal = ref(null);
 onClickOutside(rejectReasonModal, () => {
     isRejectModalOpen.value = false;
 })
-// 拒絕審核
-async function rejectPost(){
+// 開啟拒絕 Modal
+function openRejectModal() {
+    isRejectModalOpen.value = true;
+}
+// 點擊確定拒絕
+function clickRejectPost(){
     if (!rejectReason.value || !rejectReason.value.trim()){
         showInfo("提示", "請輸入原因");
         return;
     }
+    openConfirmModal("提示", "確定拒絕此薪資分享？", rejectPost, openRejectModal);
+}
+// 拒絕審核
+async function rejectPost(){
     // call 審核 api
     await Axios.post(`/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
         status: PostStatus.REJECTED,
@@ -563,18 +571,22 @@ const isRemoveModalOpen = ref(false);
 const removeReasonModal = ref(null);
 onClickOutside(removeReasonModal, () => {
     isRemoveModalOpen.value = false;
-    removeReason.value = undefined;
+    // removeReason.value = undefined;
 })
 // 點擊下架
-function clickRemovePost(id:string){
-    curConfirmPostId.value = id;
+function clickRemovePost(id?:string){
+    curConfirmPostId.value = id ? id : undefined;
     isRemoveModalOpen.value = true;
 }
-async function removePost(){
+// 點擊確定下架
+function clickConfirmRemovePost(){
     if (!removeReason.value || !removeReason.value.trim()){
         showInfo("提示", "請輸入原因");
         return;
     }
+    openConfirmModal("提示", "確定下架此薪資分享？", removePost, clickRemovePost);
+}
+async function removePost(){
     // call 下架 api
     await Axios.post(`/api/admin/removePost/${curConfirmPostId.value}`,{
         rejectReason: removeReason.value

@@ -13,7 +13,7 @@
           class="rounded-full bg-blue h-12 w-12 flex justify-center items-center"
           type="button"
         >
-        <h4 class="text-white">{{ adminStore.account.slice(0,1).toUpperCase() }}</h4>
+        <h4 class="text-white">{{ account.slice(0,1).toUpperCase() }}</h4>
         </button>
         <div
           v-if="showUserList"
@@ -21,7 +21,7 @@
         >
           <div class="flex justify-between pb-3 border-b border-b-black-5">
             <div class="text-xl">
-              {{ adminStore.account }}
+              {{ account }}
             </div>
             <div>
               <button
@@ -96,11 +96,13 @@
 
 
 <script setup lang="ts">
-import { useAdminStore } from '@/stores/admin';
 import { useRouter } from 'vue-router';
 import PostManagement  from '@/component/postManagement.vue';
 import KeywordManagement from '@/component/keywordManagement.vue';
 import { ref } from 'vue';
+import Axios from '@/utilities/axios';
+import { getCookie, removeCookie } from 'typescript-cookie'
+import { showError } from '@/utilities/message';
 
 // 共用
 enum Page {
@@ -116,11 +118,22 @@ function isPage(page: Page) : boolean{
   return curPage.value == page;
 }
 const router = useRouter()
-const adminStore = useAdminStore();
-function logout(){
-  adminStore.logout();
+async function logout(){
+  await Axios.post('/api/admin/logout')
+  .then((response) => {
+      // 清除登入資訊
+      removeCookie('token');
+      removeCookie('account');
+      // 跳至登入頁
+      router.push('/login');
+    })
+    .catch((error) => {
+      console.log(error);
+      const errorMessage = error.response ? error.response.data.message : error.message
+      showError("登出失敗", errorMessage);
+    });
 }
 // 使用者 modal
-let showUserList = ref(false);
-
+const showUserList = ref(false);
+const account = getCookie('account');
 </script>
