@@ -1,4 +1,4 @@
-import axios, { AxiosHeaders } from 'axios'
+import axios, { AxiosHeaders, AxiosError } from 'axios'
 import { showError } from '@/utilities/message'
 import router from '@/router'
 import { getCookie, removeCookie } from 'typescript-cookie'
@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
 
 
 // 判斷權限驗證是否通過
-function checkAuthorized(error) {
+function checkAuthorized(error : AxiosError) {
   if (error && error.response && error.response.status) {
     // token 驗證失敗回傳 401，導頁至權限失敗頁面
     if (401 == error.response.status) {
