@@ -9,8 +9,8 @@ export const useDialogStore = defineStore('dialog', () => {
     message: '',
     cancelText: '取消',
     confirmText: '確認',
-    cancelFunc: undefined,
-    confirmFunc: undefined,
+    cancelFunc: close,
+    confirmFunc: close,
   });
 
   function open() {

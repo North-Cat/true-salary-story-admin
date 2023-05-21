@@ -28,13 +28,13 @@
                 </p>
                 <div class="flex justify-end">
                     <button 
-                    @click="dialogStore.dialogInfo.confirmFunc? dialogStore.dialogInfo.confirmFunc() : undefined, dialogStore.close()"
+                    @click="clickComfirm();"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10">
                     {{ dialogStore.dialogInfo.confirmText }}
                     </button>
                     <button
                     v-if="dialogStore.dialogInfo.showCancel"
-                    @click="dialogStore.dialogInfo.cancelFunc? dialogStore.dialogInfo.cancelFunc() : undefined, dialogStore.close()"
+                    @click="clickCancel()"
                     class="flex py-3 px-5 justify-center items-center rounded transition duration-300 ease-in-out flex-row text-blue fill-blue bg-white border border-blue hover:bg-blue-light ms-5"
                     >
                     {{ dialogStore.dialogInfo.cancelText }}
@@ -56,4 +56,16 @@ onClickOutside(defaultModal, () => {
     dialogStore.close();
 })
 
+function clickComfirm() {
+    if (dialogStore.dialogInfo.confirmFunc) {
+        dialogStore.dialogInfo.confirmFunc();
+    }
+    dialogStore.close()
+}
+function clickCancel() {
+    if (dialogStore.dialogInfo.cancelFunc) {
+        dialogStore.dialogInfo.cancelFunc();
+    }
+    dialogStore.close()
+}
 </script>
