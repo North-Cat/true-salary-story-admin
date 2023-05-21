@@ -13,7 +13,7 @@
           class="rounded-full bg-blue h-12 w-12 flex justify-center items-center"
           type="button"
         >
-        <h4 class="text-white">{{ account.slice(0,1).toUpperCase() }}</h4>
+        <h4 class="text-white">{{ account ? account.slice(0,1).toUpperCase() : ""}}</h4>
         </button>
         <div
           v-if="showUserList"
