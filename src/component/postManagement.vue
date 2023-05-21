@@ -65,11 +65,11 @@
                         <div class="flex flex-col justify-between">
                             <h5>{{ curUnconfirmPost.companyName }} | {{ curUnconfirmPost.title }}</h5>
                             <div class="flex">
-                                <div class="caption text-black-6">{{ curUnconfirmPost.type }}</div>
+                                <div class="caption text-black-6">{{ curUnconfirmPost.employmentType }}</div>
                                 <span class="caption text-black-6 px-3">|</span>
                                 <div class="caption text-black-6">{{ curUnconfirmPost.city }}</div>
                                 <span class="caption text-black-6 px-3">|</span>
-                                <div class="caption text-black-6">{{ curUnconfirmPost.createdAt + ' 分享' }}</div>
+                                <div class="caption text-black-6">{{ curUnconfirmPost.createDate + ' 分享' }}</div>
                             </div>
                         </div>
                     </div>
