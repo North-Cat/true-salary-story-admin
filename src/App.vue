@@ -22,9 +22,11 @@ router.beforeEach((to, from, next) => {
 
   if (to.name === 'login' && isLogin){
     // 如果已經登入就不用再進登入頁，轉到頁面
+    console.log('to.name === login && isLogin');
     next('/');
   }else if (to.name !== 'login' && !isLogin) {
     // 如果還沒登入，就轉到登入頁面
+    console.log('to.name !== login && !isLogin');
     next('/login');
   }else{
     next();
