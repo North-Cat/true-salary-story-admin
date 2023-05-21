@@ -123,9 +123,10 @@ async function logout(){
   .then((response) => {
       // 清除登入資訊
       const domainValue =  window.location.hostname;
-        const pathValue =  window.location.pathname;
-        removeCookie('token', {path: pathValue, domain: domainValue})
-        removeCookie('account', {path: pathValue, domain: domainValue})
+      // const pathValue =  window.location.pathname;
+      const pathValue =  'true-salary-story-admin';
+      removeCookie('token', {path: pathValue, domain: domainValue})
+      removeCookie('account', {path: pathValue, domain: domainValue})
 
       // 跳至登入頁
       router.push('/login');
