@@ -36,8 +36,9 @@ axiosInstance.interceptors.response.use(
   
         // 清空登入資訊
         const domainValue =  window.location.hostname;
-        removeCookie('token', {domain: domainValue })
-        removeCookie('account', {domain: domainValue })
+        const pathValue =  window.location.pathname;
+        removeCookie('token', {path: pathValue, domain: domainValue})
+        removeCookie('account', {path: pathValue, domain: domainValue})
 
         // 跳轉至 login
         router.push('/login');

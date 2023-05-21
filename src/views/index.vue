@@ -123,8 +123,9 @@ async function logout(){
   .then((response) => {
       // 清除登入資訊
       const domainValue =  window.location.hostname;
-      removeCookie('token', {domain: domainValue })
-      removeCookie('account', {domain: domainValue })
+        const pathValue =  window.location.pathname;
+        removeCookie('token', {path: pathValue, domain: domainValue})
+        removeCookie('account', {path: pathValue, domain: domainValue})
 
       // 跳至登入頁
       router.push('/login');
