@@ -37,7 +37,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="post in unconfirmedPosts" :key="post._id">
+                    <tr v-for="post in unconfirmedPosts" :key="post.postId">
                         <td>
                             <button
                                 class="flex py-3 px-5 justify-center items-center transition duration-300 ease-in-out flex-row text-white fill-white bg-blue hover:bg-black-10 rounded"
@@ -47,8 +47,8 @@
                         </td>
                         <td>{{ post.companyName }}</td>
                         <td>{{ post.title }}</td>
-                        <td>{{ post.type }}</td>
-                        <td>{{ post.createdAt }}</td>
+                        <td>{{ post.employmentType }}</td>
+                        <td>{{ post.createDate }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -163,7 +163,7 @@
                                 <div class="w-full flex justify-start items-center">
                                     <div class="flex flex-col">
                                         <div class="caption text-black-5 mb-1">日均工時</div>
-                                        <h6>{{curUnconfirmPost.avgHoursPerDay + ' 小時'}}</h6> 
+                                        <h6>{{curUnconfirmPost.avgHoursPerDay ? curUnconfirmPost.avgHoursPerDay : 0 + ' 小時'}}</h6> 
                                     </div>
                                 </div>
                                 <div class="w-full flex justify-start items-center">
@@ -223,11 +223,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="post in confirmedPosts" :key="post._id">
+                    <tr v-for="post in confirmedPosts" :key="post.postId">
                         <td>
                             <button
                                 v-if="post.status == PostStatus.APPROVED"
-                                @click="clickRemovePost(post._id)"
+                                @click="clickRemovePost(post.postId)"
                                 class="flex py-3 px-5 justify-center items-center transition duration-300 ease-in-out flex-row text-white fill-white bg-red hover:bg-black-10 rounded">
                                 下架
                             </button>
@@ -235,9 +235,9 @@
                         <td>{{ statusText(post.status) }}</td>
                         <td>{{ post.companyName }}</td>
                         <td>{{ post.title }}</td>
-                        <td>{{ post.type }}</td>
-                        <td>{{ post.updatedAt }}</td>
-                        <td>{{ post.updateUser.account }}</td>
+                        <td>{{ post.employmentType }}</td>
+                        <td>{{ post.updatedDate }}</td>
+                        <td>{{ post.updateUser ? post.updateUser.account : ""}}</td>
                         <td>
                             <div class="flex justify-center">
                                 <button 
@@ -466,7 +466,7 @@ function openConfirmPost(){
 // 確定審核
 async function confirmPost(){
     // call 審核 api
-    await Axios.post(`/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
+    await Axios.post(`/api/admin/confirmPost/${curUnconfirmPost.value?.postId}`,{
         status: PostStatus.APPROVED
     })
     .then((response) => {
@@ -503,7 +503,7 @@ function clickRejectPost(){
 // 拒絕審核
 async function rejectPost(){
     // call 審核 api
-    await Axios.post(`/api/admin/confirmPost/${curUnconfirmPost.value?._id}`,{
+    await Axios.post(`/api/admin/confirmPost/${curUnconfirmPost.value?.postId}`,{
         status: PostStatus.REJECTED,
         rejectReason: rejectReason.value
     })

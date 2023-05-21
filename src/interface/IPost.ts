@@ -1,8 +1,8 @@
 export interface IPost {
-    _id: string;
+    postId: string;
     title: string;
     companyName: string;
-    taxId: string;
+    employmentType: string;
     type: string;
     inService: boolean;
     city: string;
@@ -22,8 +22,8 @@ export interface IPost {
     tags: string[];
     status: string;
     rejectReason: string;
-    createdAt: string;
-    updatedAt: string;
+    createDate: string;
+    updatedDate: string;
     updateUser: {
         _id: string,
         account: string

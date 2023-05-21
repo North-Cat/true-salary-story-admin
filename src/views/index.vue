@@ -119,12 +119,16 @@ function isPage(page: Page) : boolean{
 }
 const router = useRouter()
 async function logout(){
+  console.log("登出");
   await Axios.post('/api/admin/logout')
   .then((response) => {
       // 清除登入資訊
+      console.log("清除登入資訊");
       removeCookie('token');
       removeCookie('account');
+
       // 跳至登入頁
+      console.log("跳至登入頁");
       router.push('/login');
     })
     .catch((error) => {
