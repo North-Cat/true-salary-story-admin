@@ -122,11 +122,8 @@ async function logout(){
   await Axios.post('/api/admin/logout')
   .then((response) => {
       // 清除登入資訊
-      const domainValue =  window.location.hostname;
-      // const pathValue =  window.location.pathname;
-      const pathValue =  'true-salary-story-admin';
-      removeCookie('token', {path: pathValue, domain: domainValue})
-      removeCookie('account', {path: pathValue, domain: domainValue})
+      document.cookie = "token=";
+      document.cookie = "account=";
 
       // 跳至登入頁
       router.push('/login');
