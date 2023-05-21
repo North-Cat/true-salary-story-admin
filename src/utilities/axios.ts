@@ -35,8 +35,10 @@ axiosInstance.interceptors.response.use(
         showError("權限錯誤", message ? message : "" );
   
         // 清空登入資訊
-        removeCookie('token');
-        removeCookie('account');
+        const domainValue =  window.location.hostname;
+        removeCookie('token', {domain: domainValue })
+        removeCookie('account', {domain: domainValue })
+
         // 跳轉至 login
         router.push('/login');
 
