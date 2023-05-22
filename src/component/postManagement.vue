@@ -236,7 +236,7 @@
                         <td>{{ post.companyName }}</td>
                         <td>{{ post.title }}</td>
                         <td>{{ post.employmentType }}</td>
-                        <td>{{ post.updatedDate }}</td>
+                        <td>{{ post.updateDate }}</td>
                         <td>{{ post.updateUser ? post.updateUser.account : ""}}</td>
                         <td>
                             <div class="flex justify-center">
