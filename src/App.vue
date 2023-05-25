@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 import router from './router';
-import defaultModal from '@/component/defaultModal.vue';
+import DefaultModal from '@/component/DefaultModal.vue';
 import { getCookie } from 'typescript-cookie';
 
 router.beforeEach((to, from, next) => {

@@ -90,8 +90,8 @@
 
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import PostManagement from '@/component/postManagement.vue';
-import KeywordManagement from '@/component/keywordManagement.vue';
+import PostManagement from '@/component/PostManagement.vue';
+import KeywordManagement from '@/component/KeywordManagement.vue';
 import { ref } from 'vue';
 import Axios from '@/utilities/axios';
 import { getCookie, removeCookie } from 'typescript-cookie';

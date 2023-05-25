@@ -1,23 +1,23 @@
 import { createRouter, type RouteRecordRaw, createWebHashHistory } from 'vue-router';
-import Index from '@/views/index.vue';
-import Login from '@/views/login.vue';
-import Guideline from '@/views/guideline.vue';
+import IndexView from '@/views/IndexView.vue';
+import LoginView from '@/views/LoginView.vue';
+import GuidelineView from '@/views/guidelineView.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'index',
-    component: Index,
+    component: IndexView,
   },
   {
     path: '/login',
     name: 'login',
-    component: Login,
+    component: LoginView,
   },
   {
     path: '/guideline',
     name: 'guideline',
-    component: Guideline,
+    component: GuidelineView,
   },
 ];
 
