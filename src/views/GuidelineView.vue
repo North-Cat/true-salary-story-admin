@@ -1,6 +1,6 @@
 <template>
   <div class="bg-stone-300 text-black-10 h-content">
-    <div class="container mx-auto max-w-7xl flex flex-col pt-10">
+    <div class="container mx-auto max-w-9xl flex flex-col pt-10">
       <div class="mb-1 text-stone-600">Style</div>
       <div class="py-10 bg-white px-10">
         <div class="flex flex-wrap -mx-2">
@@ -283,7 +283,7 @@
       </div>
     </div>
 
-    <div class="container mx-auto max-w-7xl flex flex-col pt-10">
+    <div class="container mx-auto max-w-9xl flex flex-col pt-10">
       <div class="mb-1 text-stone-600">Component</div>
       <div class="py-10 bg-white px-10">
         <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-5">
@@ -305,12 +305,116 @@
           </div>
           <div class="w-full sm:w-6/12 px-2">
             <div class="flex flex-col justify-center items-center mb-6">
-              <button @click="confirmOpen" class="mb-5 px-6 py-2 text-white bg-blue rounded shadow" type="button">
-                Open confirmOpen
-              </button>
-              <button @click="promptOpen" class="px-6 py-2 text-white bg-blue rounded shadow" type="button">
-                Open promptOpen
-              </button>
+              <BaseButton cate="blue-text" content="匿名分享" class="mb-1">
+                <span class="icon-edit text-lg me-2"></span>
+              </BaseButton>
+              <BaseButton cate="gray-text" content="搜尋" class="mb-1">
+                <span class="icon-search text-lg me-2"></span>
+              </BaseButton>
+              <BaseButton cate="gray-text" content="訊息" class="mb-1">
+                <div>
+                  <!-- 訊息紅點 -->
+                  <span
+                    class="z-10 absolute right-1 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"
+                  ></span>
+                  <span class="icon-mail text-2xl me-2"></span>
+                </div>
+              </BaseButton>
+              <BaseButton cate="yellow-text" content="240 積分" class="mb-1">
+                <span class="icon-star-circle text-xl me-2"></span>
+              </BaseButton>
+              <BaseButton cate="secondary" content="登入" class="mb-2">
+                <span class="icon-person text-xl me-2"></span>
+              </BaseButton>
+              <BaseButton cate="primary" content="加薪計畫" class="mb-2">
+                <span class="icon-star text-2xl me-2"></span>
+              </BaseButton>
+              <BaseButton cate="gray" content="已訂閱" class="mb-2"> </BaseButton>
+              <BaseButton cate="white" content="套用" class="mb-2">
+                <span class="icon-filter text-sm me-2"></span>
+              </BaseButton>
+            </div>
+            <div class="flex flex-row justify-center items-center mb-6">
+              <BaseButton cate="text-sm" content="分享" class="mb-1">
+                <span class="icon-edit text-2xl mb-1"></span>
+              </BaseButton>
+              <BaseButton cate="text-sm" content="搜尋" class="mb-1">
+                <span class="icon-search text-2xl mb-1"></span>
+              </BaseButton>
+              <BaseButton cate="text-sm" content="訊息" class="mb-1">
+                <div class="-mb-1">
+                  <!-- 訊息紅點 -->
+                  <span
+                    class="z-10 absolute right-0 inline-flex rounded-full h-3 w-3 bg-red border-white border-2"
+                  ></span>
+                  <span class="icon-mail text-3xl"></span>
+                </div>
+              </BaseButton>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
+                <pre><code>
+&#060;BaseButton &#058;cate&#061;&#034;cate&#034; &#058;content&#061;&#034;content&#034;&#062;
+  &#060;svg&#062; icon &#060;&#047;svg&#062;
+&#060;&#047;BaseButton&#062;
+
+套件路徑: @/components/BaseButton.vue
+參數說明:
+  to: 
+      路由, 傳入 String || Object
+  cate: 
+      類型, 傳入 String , 選項如下
+          'primary': 主要按鈕,
+          'secondary': 次要按鈕,
+          'gray': 灰色按鈕, 
+          'white': 白色按鈕, 
+          'gray-text':灰色無邊框, 
+          'blue-text':藍色無邊框, 
+          'yellow-text':黃色無邊框, 
+          'text-sm':小型無邊框
+  content: 
+      文字內容, 傳入 String
+                          </code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Message</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-col justify-center items-center">
+              <BaseButton class="mb-2" @click="clickShowInfo">showInfo</BaseButton>
+              <BaseButton class="mb-2" @click="clickShowError">showError</BaseButton>
+              <BaseButton class="mb-2" @click="clickShowSuccess">showSuccess</BaseButton>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded">
+                <pre class="overflow-x-scroll"><code>
+在 js 中使用:
+import { showInfo, showSuccess, showError } from "@/utilities/message";
+
+showInfo("提示標題", "請填寫帳號。");
+showError("失敗標題", "失敗訊息");
+showSuccess("成功標題", "成功訊息");
+                        </code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Dialog</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-col justify-center items-center mb-6">
+              <BaseButton @click="confirmOpen" class="mb-2"> Open confirmOpen </BaseButton>
+              <BaseButton @click="promptOpen" class="mb-2"> Open promptOpen </BaseButton>
             </div>
           </div>
           <div class="w-full sm:w-4/12 px-2">
@@ -345,6 +449,55 @@ confirmFunc:
             </div>
           </div>
         </div>
+        <div class="flex flex-wrap -mx-2 border-b-2 border-stone-300 py-10">
+          <div class="w-full sm:w-2/12 px-2">
+            <h4 class="h4 ms-10">Pagination</h4>
+          </div>
+          <div class="w-full sm:w-6/12 px-2">
+            <div class="flex flex-col justify-center items-center mb-6">
+              <div class="flex flex-col items-center mb-20">
+                <h6 class="mb-5">六頁以下，頁面全顯示</h6>
+                <PaginationButton :init-page="initPage1" :total-pages="totalPages1" @change-page-event="callSomeFunc">
+                </PaginationButton>
+              </div>
+              <div class="flex flex-col items-center mb-10">
+                <h6 class="mb-5">六頁以上，顯示部分</h6>
+                <PaginationButton :init-page="initPage2" :total-pages="totalPages2" @change-page-event="callSomeFunc">
+                </PaginationButton>
+              </div>
+            </div>
+          </div>
+          <div class="w-full sm:w-4/12 px-2">
+            <div class="flex flex-col justify-center items-start">
+              <div class="w-full bg-stone-200 py-2 px-5 text-xs text-stone-600 rounded overflow-x-scroll">
+                <pre><code>
+&#060;PaginationButton
+:init-page="initPage"
+:total-pages="totalPages"
+@change-page-event="callSomeFunc"&#062;
+&#060;/PaginationButton&#062;
+
+js:
+const initPage = ref(1); // 初始選擇頁面
+const totalPages = ref(10); //所有頁數
+function callSomeFunc(currentPageFromComponent) {
+    console.log("目前頁數", currentPageFromComponent);
+}
+
+
+套件路徑: @/components/PaginationButton.vue
+參數說明:
+initPage: 
+    初始選擇頁面, 傳入 Number, 非必填, 預設 1      
+totalPages: 
+    總頁數, 傳入 Number, 必填
+changePageEvent:
+    換頁時會觸發的事件, 傳入父元件的 function, 此 function 參數會接收子元件回傳的目前頁數
+                                        </code></pre>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -353,6 +506,9 @@ confirmFunc:
 <script setup lang="ts">
 import { ref } from 'vue';
 import { openConfirmModal, openPromptModal } from '@/utilities/dialog';
+import { showInfo, showError, showSuccess } from '@/utilities/message';
+import BaseButton from '@/component/BaseButton.vue';
+import PaginationButton from '@/component/PaginationButton.vue';
 
 const h1Code = ref('<h1>Title / H1</h1>');
 const h2Code = ref('<h2>Title / H2</h2>');
@@ -364,9 +520,18 @@ const bodyCode = ref('<div class="body">Title / Body.20</div>');
 const bodySmCode = ref('<div class="body-sm">Title / Body.16</div>');
 const captionCode = ref('<div class="caption">Title / Caption</div>');
 
-const isOpen = ref(false);
-const isOpen2 = ref(false);
+// message
+function clickShowInfo() {
+  showInfo('提示標題', '請填寫帳號。');
+}
+function clickShowError() {
+  showError('失敗標題', '失敗訊息');
+}
+function clickShowSuccess() {
+  showSuccess('成功標題', '成功訊息');
+}
 
+// dialog
 function confirmOpen() {
   // 使用 utilities 的 dialog 開啟視窗
   let title = '標題';
@@ -384,5 +549,15 @@ function confirmFunc() {
 }
 function cancelFunc() {
   console.log('觸發取消按鈕');
+}
+
+// pagination
+const initPage1 = ref(1); // 目前頁面
+const totalPages1 = ref(6); // 所有頁數
+const initPage2 = ref(1); // 目前頁面
+const totalPages2 = ref(10); // 所有頁數
+function callSomeFunc(currentPageFromComponent: number) {
+  // console.log('目前頁數', currentPageFromComponent);
+  showInfo('目前頁數', currentPageFromComponent.toString());
 }
 </script>

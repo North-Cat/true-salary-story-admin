@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { showInfo, showError, showSuccess } from '@/utilities/message';
+import { showInfo, showError } from '@/utilities/message';
 import Axios from '@/utilities/axios';
 import { setCookie } from 'typescript-cookie';
 

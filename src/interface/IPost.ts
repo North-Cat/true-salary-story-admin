@@ -23,7 +23,7 @@ export interface IPost {
   status: string;
   rejectReason: string;
   createDate: string;
-  updatedDate: string;
+  updateDate: string;
   updateUser: {
     _id: string;
     account: string;

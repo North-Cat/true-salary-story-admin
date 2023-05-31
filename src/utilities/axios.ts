@@ -1,7 +1,7 @@
-import axios, { AxiosHeaders, AxiosError } from 'axios';
+import axios, { AxiosHeaders } from 'axios';
 import { showError } from '@/utilities/message';
 import router from '@/router';
-import { getCookie, removeCookie } from 'typescript-cookie';
+import { getCookie } from 'typescript-cookie';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_API_URL,

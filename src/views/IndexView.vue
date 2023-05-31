@@ -94,7 +94,7 @@ import PostManagement from '@/component/PostManagement.vue';
 import KeywordManagement from '@/component/KeywordManagement.vue';
 import { ref } from 'vue';
 import Axios from '@/utilities/axios';
-import { getCookie, removeCookie } from 'typescript-cookie';
+import { getCookie } from 'typescript-cookie';
 import { showError } from '@/utilities/message';
 
 // 共用
