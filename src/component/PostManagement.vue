@@ -54,6 +54,11 @@ function changePage(page: number) {
     getConfirmedPosts();
   }
 }
+// 重新渲染頁數
+const componentKey = ref(0);
+const forceRender = () => {
+  componentKey.value += 1;
+};
 
 /**
  * 待審核相關
