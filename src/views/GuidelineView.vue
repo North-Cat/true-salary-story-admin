@@ -277,6 +277,10 @@
                 <span class="text-2xl icon-file-gear me-2"></span>
                 <p>icon-file-gear</p>
               </div>
+              <div class="flex flex-row items-center me-5 mb-8">
+                <span class="text-2xl icon-refresh me-2"></span>
+                <p>icon-refresh</p>
+              </div>
             </div>
           </div>
         </div>

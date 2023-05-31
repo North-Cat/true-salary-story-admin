@@ -6,10 +6,12 @@ import type { Router } from 'vue-router';
 import App from './App.vue';
 import router from './router';
 import Notifications from '@kyvg/vue3-notification';
+import VueDatePicker from '@vuepic/vue-datepicker';
 
 import './assets/css/main.css';
 import './assets/css/icon.css';
 import './assets/css/tailwind.css';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 const app = createApp(App);
 const pinia = createPinia();
@@ -30,5 +32,7 @@ pinia.use(Persistedstate);
 app.use(pinia);
 app.use(router);
 app.use(Notifications);
+
+app.component('VueDatePicker', VueDatePicker);
 
 app.mount('#app');

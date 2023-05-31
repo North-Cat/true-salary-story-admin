@@ -67,6 +67,7 @@
 }
 
 @layer utilities {
+  /* notification */
   .my-notification .vue-notification {
     @apply m-1 p-5 caption rounded bg-white text-black-10 shadow-md;
   }
