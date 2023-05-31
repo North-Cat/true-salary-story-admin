@@ -1,7 +1,7 @@
 import { createRouter, type RouteRecordRaw, createWebHashHistory } from 'vue-router';
 import IndexView from '@/views/IndexView.vue';
 import LoginView from '@/views/LoginView.vue';
-import GuidelineView from '@/views/guidelineView.vue';
+import GuidelineView from '@/views/GuidelineView.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
