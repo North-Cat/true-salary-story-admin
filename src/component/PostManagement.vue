@@ -81,6 +81,8 @@ async function getUnconfirmedPosts() {
       // FIXME
       const unconfirmedPostsCount = 22;
       unComfirmtotalPages.value = Math.ceil(unconfirmedPostsCount / limit.value);
+
+      scrollToTop();
     })
     .catch((error) => {
       console.log(error);
@@ -238,6 +240,8 @@ async function getConfirmedPosts() {
       // FIXME
       const confirmedPostsCount = 33;
       comfirmtotalPages.value = Math.ceil(confirmedPostsCount / limit.value);
+
+      scrollToTop();
     })
     .catch((error) => {
       console.log(error);
@@ -312,6 +316,12 @@ async function initConfirmedPost() {
   // // 清空下架拒絕原因
   removeReason.value = undefined;
 }
+const scrollToTop = () => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
+};
 </script>
 
 <template>
