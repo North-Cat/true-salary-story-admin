@@ -8,14 +8,14 @@ import Axios from '@/utilities/axios';
 import { openConfirmModal } from '@/utilities/dialog';
 
 interface IKeyword {
-  id: string,
-  rank: number,
-  score: number,
-  keyword: string,
-  status: number,
-  linkNumber: number,
-  createdAt: string,
-  updatedAt: string
+  id: string;
+  rank: number;
+  score: number;
+  keyword: string;
+  status: number;
+  linkNumber: number;
+  createdAt: string;
+  updatedAt: string;
 }
 
 // 選擇時間區間
@@ -23,7 +23,7 @@ const dateRangeCondition = ref();
 const endDate = dateToString(new Date());
 const startDate = dateToString(new Date(new Date().setMonth(new Date().getMonth() - 1)));
 dateRangeCondition.value = [startDate, endDate];
-function dateToString(date: Date):string {
+function dateToString(date: Date): string {
   const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
   const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
   const year = date.getFullYear();
@@ -35,9 +35,9 @@ const format = (dateRange: Date[]) => {
   let endDateFormat = '';
   for (let i in dateRange) {
     if (i == '0') {
-      startDateFormat = dateToString(dateRange[i]);;
+      startDateFormat = dateToString(dateRange[i]);
     } else if (i == '1') {
-      endDateFormat = dateToString(dateRange[i]);;
+      endDateFormat = dateToString(dateRange[i]);
     }
   }
   return `${startDateFormat} 至 ${endDateFormat}`;
@@ -69,10 +69,10 @@ watch(statusCondition, () => {
 const selectedId = ref(); // 選到的關鍵字
 const keywords = ref<IKeyword[]>([]);
 const keywordCount = ref();
-const computedStatus = computed(() => (status:number) => {
-  const option = statusOption.find((item) => item.value == status)
+const computedStatus = computed(() => (status: number) => {
+  const option = statusOption.find((item) => item.value == status);
   return option?.text;
-})
+});
 
 // 頁數
 const limit = ref(10);
@@ -95,19 +95,21 @@ function closed() {
   getKeywords();
 }
 // 換頁
-function changePage(page:number) {
+function changePage(page: number) {
   curPage.value = page;
   getKeywords();
 }
 // 刪除提示
-function clickDeleteKeyword(id: string){
+function clickDeleteKeyword(id: string) {
   selectedId.value = id;
-  openConfirmModal("提示", "確定要刪除此關鍵字？", deleteKeyword);
+  openConfirmModal('提示', '確定要刪除此關鍵字？', deleteKeyword);
 }
 
 // call 取得關鍵字 api
-async function getKeywords (){
-  await Axios.get(`/api/keywords?page=${curPage.value}&limit=${limit.value}&startDate=${dateRangeCondition.value[0]}&endDate=${dateRangeCondition.value[1]}&status=${statusCondition.value}`)
+async function getKeywords() {
+  await Axios.get(
+    `/api/keywords?page=${curPage.value}&limit=${limit.value}&startDate=${dateRangeCondition.value[0]}&endDate=${dateRangeCondition.value[1]}&status=${statusCondition.value}`,
+  )
     .then((response) => {
       keywords.value = response.data.data;
       keywords.value.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
@@ -126,14 +128,13 @@ async function getKeywords (){
     });
 }
 // call 編輯關鍵字 api
-async function editKeyword (id: string, enable: boolean){
-  await Axios.patch(`/api/keywords/${id}`,
-    {
-      status: enable ? 1 : 0
-    })
+async function editKeyword(id: string, enable: boolean) {
+  await Axios.patch(`/api/keywords/${id}`, {
+    status: enable ? 1 : 0,
+  })
     .then((response) => {
       const text = enable ? '啟用' : '停用';
-      showSuccess("成功", `關鍵字已${text}`);
+      showSuccess('成功', `關鍵字已${text}`);
 
       // 重新查詢
       getKeywords();
@@ -145,10 +146,10 @@ async function editKeyword (id: string, enable: boolean){
 }
 
 // call 刪除關鍵字 api
-async function deleteKeyword (){
+async function deleteKeyword() {
   await Axios.delete(`/api/keywords/${selectedId.value}`)
     .then((response) => {
-      showSuccess("成功", `關鍵字已刪除`);
+      showSuccess('成功', `關鍵字已刪除`);
 
       // 重新查詢
       getKeywords();
@@ -159,15 +160,12 @@ async function deleteKeyword (){
     });
 }
 
-
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
     behavior: 'smooth',
   });
 };
-
-
 </script>
 <template>
   <div class="border-2 rounded flex flex-col justify-start items-start lg:min-w-[850px] bg-white">
@@ -190,7 +188,7 @@ const scrollToTop = () => {
               model-type="yyyy-MM-dd"
               auto-apply
               @closed="closed"
-              />
+            />
           </div>
           <div class="flex-col items-center">
             <h6 class="text-black-6 mb-2">狀態</h6>
@@ -225,25 +223,17 @@ const scrollToTop = () => {
           <tr v-for="keyword in keywords" :key="keyword.id">
             <td>
               <div class="flex">
-                <BaseButton 
-                  v-if="keyword.status == 0" 
-                  content="啟用" 
+                <BaseButton
+                  v-if="keyword.status == 0"
+                  content="啟用"
                   class="me-3"
-                  @click="editKeyword(keyword.id, true)">
+                  @click="editKeyword(keyword.id, true)"
+                >
                 </BaseButton>
-                <BaseButton 
-                  v-else 
-                  content="停用" 
-                  class="me-3" 
-                  cate="red"
-                  @click="editKeyword(keyword.id, false)">
+                <BaseButton v-else content="停用" class="me-3" cate="red" @click="editKeyword(keyword.id, false)">
                 </BaseButton>
 
-                <BaseButton 
-                  content="刪除" 
-                  cate="gray"
-                  @click="clickDeleteKeyword(keyword.id)">
-                </BaseButton>
+                <BaseButton content="刪除" cate="gray" @click="clickDeleteKeyword(keyword.id)"> </BaseButton>
               </div>
             </td>
             <td>{{ keyword.keyword }}</td>
