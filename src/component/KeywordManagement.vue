@@ -47,7 +47,7 @@ const format = (dateRange: Date[]) => {
 const statusOption = [
   {
     text: '全部',
-    value: 99,
+    value: '',
   },
   {
     text: '停用',
@@ -111,10 +111,9 @@ async function getKeywords() {
     `/api/keywords?page=${curPage.value}&limit=${limit.value}&startDate=${dateRangeCondition.value[0]}&endDate=${dateRangeCondition.value[1]}&status=${statusCondition.value}`,
   )
     .then((response) => {
-      keywords.value = response.data.data;
+      keywords.value = response.data.data.keywords;
       keywords.value.sort((a, b) => new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf());
-      // FIXME
-      const keywordCount = 22;
+      const keywordCount = response.data.data.totalCount;
       totalPages.value = Math.ceil(keywordCount / limit.value);
 
       selectedId.value = undefined;
@@ -159,6 +158,9 @@ async function deleteKeyword() {
       showError('刪除關鍵字失敗', error.response.data.message);
     });
 }
+
+// 初始化
+getKeywords();
 
 const scrollToTop = () => {
   window.scrollTo({

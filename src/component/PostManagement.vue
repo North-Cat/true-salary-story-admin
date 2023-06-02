@@ -65,8 +65,7 @@ const forceRender = () => {
  */
 const curUnconfirmPost = ref<IPost>(); // 目前選到的未審核物件
 const unconfirmedPosts = ref<IPost[]>([]);
-// FIXME 改接 api 回傳
-const unconfirmedPostsCount = 100;
+const unconfirmedPostsCount = ref(0);
 // 一進頁面就呼叫取得待審核 api
 initUnconfirmPost();
 function selectCurPost(post: IPost) {
@@ -76,11 +75,9 @@ async function getUnconfirmedPosts() {
   // call 取得未審核 api
   await Axios.get(`/api/admin/unconfirmedPosts?page=${unComfirmCurPage.value}&limit=${limit.value}`)
     .then((response) => {
-      unconfirmedPosts.value = response.data.data;
-      unconfirmedPosts.value.sort((a, b) => new Date(b.createDate).valueOf() - new Date(a.createDate).valueOf());
-      // FIXME
-      const unconfirmedPostsCount = 22;
-      unComfirmtotalPages.value = Math.ceil(unconfirmedPostsCount / limit.value);
+      unconfirmedPosts.value = response.data.data.posts;
+      unconfirmedPostsCount.value = response.data.data.totalCount;
+      unComfirmtotalPages.value = Math.ceil(unconfirmedPostsCount.value / limit.value);
 
       scrollToTop();
     })
@@ -235,10 +232,8 @@ async function getConfirmedPosts() {
   // call 取得已審核 api
   await Axios.get(`/api/admin/confirmedPosts?page=${comfirmCurPage.value}&limit=${limit.value}`)
     .then((response) => {
-      confirmedPosts.value = response.data.data;
-      confirmedPosts.value.sort((a, b) => new Date(b.updateDate).valueOf() - new Date(a.updateDate).valueOf());
-      // FIXME
-      const confirmedPostsCount = 33;
+      confirmedPosts.value = response.data.data.posts;
+      const confirmedPostsCount = response.data.data.totalCount;
       comfirmtotalPages.value = Math.ceil(confirmedPostsCount / limit.value);
 
       scrollToTop();
