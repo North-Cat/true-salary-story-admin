@@ -80,6 +80,7 @@ async function getUnconfirmedPosts() {
       unComfirmtotalPages.value = Math.ceil(unconfirmedPostsCount.value / limit.value);
 
       scrollToTop();
+      forceRender();
     })
     .catch((error) => {
       console.log(error);
@@ -237,6 +238,7 @@ async function getConfirmedPosts() {
       comfirmtotalPages.value = Math.ceil(confirmedPostsCount / limit.value);
 
       scrollToTop();
+      forceRender();
     })
     .catch((error) => {
       console.log(error);
