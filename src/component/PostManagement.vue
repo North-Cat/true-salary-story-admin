@@ -87,6 +87,13 @@ async function getUnconfirmedPosts() {
       showError('取得未審核薪資失敗', error.response.data.message);
     });
 }
+const resultSalaryTitle = computed(
+  () => (post: IPost) => post.monthlySalary ? '月薪' : post.dailySalary ? '日薪' : '時薪',
+);
+const resultSalary = computed(
+  () => (post: IPost) =>
+    post.monthlySalary ? post.monthlySalary : post.dailySalary ? post.dailySalary : post.hourlySalary,
+);
 
 // 審核內容
 const feelingClass = computed(() => (text: string) => {
@@ -411,8 +418,8 @@ const scrollToTop = () => {
                     <span class="icon-coin text-2xl text-blue"></span>
                   </div>
                   <div class="flex flex-col">
-                    <div class="caption text-black-5 mb-1">月薪</div>
-                    <h6>{{ numberRange(curUnconfirmPost.monthlySalary) }}</h6>
+                    <div class="caption text-black-5 mb-1">{{ resultSalaryTitle(curUnconfirmPost) }}</div>
+                    <h6>{{ numberRange(resultSalary(curUnconfirmPost)) }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
@@ -477,19 +484,21 @@ const scrollToTop = () => {
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">在職年資</div>
-                    <h6>{{ curUnconfirmPost.workYears + ' 年' }}</h6>
+                    <h6>{{ curUnconfirmPost.workYears > 0 ? `${curUnconfirmPost.workYears}年` : '未滿1年' }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">個人總年資</div>
-                    <h6>{{ curUnconfirmPost.totalWorkYears + ' 年' }}</h6>
+                    <h6>
+                      {{ curUnconfirmPost.totalWorkYears > 0 ? `${curUnconfirmPost.totalWorkYears}年` : '未滿1年' }}
+                    </h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">
                   <div class="flex flex-col">
                     <div class="caption text-black-5 mb-1">日均工時</div>
-                    <h6>{{ curUnconfirmPost.avgHoursPerDay ? curUnconfirmPost.avgHoursPerDay : 0 + ' 小時' }}</h6>
+                    <h6>{{ curUnconfirmPost.avgHoursPerDay ? curUnconfirmPost.avgHoursPerDay : 8 + '小時' }}</h6>
                   </div>
                 </div>
                 <div class="w-full flex justify-start items-center">

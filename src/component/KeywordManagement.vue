@@ -119,7 +119,7 @@ async function getKeywords() {
       selectedId.value = undefined;
 
       forceRender();
-      
+
       // 先不要滾到最上面，這樣一直編輯畫面一直會動不好使用
       // scrollToTop();
     })

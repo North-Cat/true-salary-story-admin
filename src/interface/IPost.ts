@@ -10,6 +10,8 @@ export interface IPost {
   totalWorkYears: number;
   avgHoursPerDay: number;
   monthlySalary: number;
+  dailySalary: number;
+  hourlySalary: number;
   yearlySalary: number;
   yearEndBonus: number;
   holidayBonus: number;
