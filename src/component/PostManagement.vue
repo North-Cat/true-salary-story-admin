@@ -595,7 +595,7 @@ const scrollToTop = () => {
       </div>
       <div class="mt-4">
         <p class="mb-4 body">請輸入拒絕原因 (100 字以內)：</p>
-        <textarea v-model="rejectReason" class="border-2 border-black-1 mb-5" rows="4" cols="55" maxlength="100">
+        <textarea v-model="rejectReason" class="w-full border-2 border-black-1 mb-5" rows="4" cols="55" maxlength="100">
         </textarea>
         <div class="flex justify-end">
           <BaseButton @click="clickRejectPost()" content="確認拒絕" cate="red" class="me-3"> </BaseButton>
@@ -616,7 +616,7 @@ const scrollToTop = () => {
       </div>
       <div class="mt-4">
         <p class="mb-4 body">請輸入下架原因 (100 字以內)：</p>
-        <textarea v-model="removeReason" class="border-2 border-black-1 mb-5" rows="4" cols="55" maxlength="100">
+        <textarea v-model="removeReason" class="w-full border-2 border-black-1 mb-5" rows="4" cols="55" maxlength="100">
         </textarea>
         <div class="flex justify-end">
           <BaseButton @click="clickConfirmRemovePost()" content="確認下架" cate="red" class="me-3"> </BaseButton>
