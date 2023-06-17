@@ -372,23 +372,23 @@ const scrollToTop = () => {
       <!-- 待審核頁籤 -->
       <table class="table-auto" aria-describedby="待審核表格" v-if="isTab(Tab.UNCONFIRMED) && !curUnconfirmPost">
         <thead class="">
-          <tr>
-            <th>管理</th>
-            <th>公司名稱</th>
-            <th>應徵職務</th>
-            <th>職務類別</th>
-            <th>建立日期</th>
+          <tr class="whitespace-nowrap">
+            <th class="px-2">管理</th>
+            <th class="px-2">公司名稱</th>
+            <th class="px-2">應徵職務</th>
+            <th class="px-2">職務類別</th>
+            <th class="px-2">建立日期</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="post in unconfirmedPosts" :key="post.postId">
-            <td>
+            <td class="px-2">
               <BaseButton @click="selectCurPost(post)" content="審核"></BaseButton>
             </td>
-            <td>{{ post.companyName }}</td>
-            <td>{{ post.title }}</td>
-            <td>{{ post.employmentType }}</td>
-            <td>{{ post.createDate }}</td>
+            <td class="px-2">{{ post.companyName }}</td>
+            <td class="px-2">{{ post.title }}</td>
+            <td class="px-2">{{ post.employmentType }}</td>
+            <td class="px-2">{{ post.createDate }}</td>
           </tr>
         </tbody>
       </table>
@@ -547,34 +547,35 @@ const scrollToTop = () => {
       <!-- 已審核頁籤 -->
       <table class="table-auto" aria-describedby="已審核表格" v-if="isTab(Tab.CONFIRMED)">
         <thead class="">
-          <tr>
-            <th>管理</th>
-            <th>審核狀態</th>
-            <th>公司名稱</th>
-            <th>應徵職務</th>
-            <th>職務類別</th>
-            <th>更新日期</th>
-            <th>更新人員</th>
-            <th>拒絕原因</th>
+          <tr class="whitespace-nowrap">
+            <th class="px-2">管理</th>
+            <th class="px-2">審核狀態</th>
+            <th class="px-2">公司名稱</th>
+            <th class="px-2">應徵職務</th>
+            <th class="px-2">職務類別</th>
+            <th class="px-2">更新日期</th>
+            <th class="px-2">更新人員</th>
+            <th class="px-2">拒絕原因</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="post in confirmedPosts" :key="post.postId">
-            <td>
+            <td class="px-2">
               <BaseButton
                 v-if="post.status == PostStatus.APPROVED"
                 @click="clickRemovePost(post.postId)"
                 content="下架"
                 cate="red"
+                class="min-w-[74px]"
               ></BaseButton>
             </td>
-            <td>{{ statusText(post.status) }}</td>
-            <td>{{ post.companyName }}</td>
-            <td>{{ post.title }}</td>
-            <td>{{ post.employmentType }}</td>
-            <td>{{ post.updateDate }}</td>
-            <td>{{ post.updateUser ? post.updateUser.account : '' }}</td>
-            <td>
+            <td class="px-2">{{ statusText(post.status) }}</td>
+            <td class="px-2">{{ post.companyName }}</td>
+            <td class="px-2">{{ post.title }}</td>
+            <td class="px-2">{{ post.employmentType }}</td>
+            <td class="whitespace-nowrap">{{ post.updateDate }}</td>
+            <td class="px-2">{{ post.updateUser ? post.updateUser.account : '' }}</td>
+            <td class="px-2">
               <div class="flex justify-center">
                 <BaseButton v-if="post.rejectReason" @click="openRejectReasonModal(post.rejectReason)" cate="gray-text">
                   <div class="icon-file text-2xl"></div>

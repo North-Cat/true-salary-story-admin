@@ -212,20 +212,20 @@ const scrollToTop = () => {
 
       <table class="table-auto" aria-describedby="待審核表格">
         <thead class="">
-          <tr>
-            <th>管理</th>
-            <th>關鍵字</th>
-            <th>排名</th>
-            <th>搜尋分數</th>
-            <th>連結數</th>
-            <th>狀態</th>
-            <th>上架日期</th>
-            <th>更新日期</th>
+          <tr class="whitespace-nowrap">
+            <th class="px-2">管理</th>
+            <th class="px-2">關鍵字</th>
+            <th class="px-2">排名</th>
+            <th class="px-2">搜尋分數</th>
+            <th class="px-2">連結數</th>
+            <th class="px-2">狀態</th>
+            <th class="px-2">上架日期</th>
+            <th class="px-2">更新日期</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="keyword in keywords" :key="keyword.id">
-            <td>
+            <td class="px-2">
               <div class="flex">
                 <BaseButton
                   v-if="keyword.status == 0"
@@ -240,13 +240,13 @@ const scrollToTop = () => {
                 <BaseButton content="刪除" cate="gray" @click="clickDeleteKeyword(keyword.id)"> </BaseButton>
               </div>
             </td>
-            <td>{{ keyword.keyword }}</td>
-            <td>{{ keyword.rank }}</td>
-            <td>{{ keyword.score }}</td>
-            <td>{{ keyword.linkNumber }}</td>
-            <td>{{ computedStatus(keyword.status) }}</td>
-            <td>{{ keyword.createdAt }}</td>
-            <td>{{ keyword.updatedAt }}</td>
+            <td class="px-2">{{ keyword.keyword }}</td>
+            <td class="px-2">{{ keyword.rank }}</td>
+            <td class="px-2">{{ keyword.score }}</td>
+            <td class="px-2">{{ keyword.linkNumber }}</td>
+            <td class="px-2">{{ computedStatus(keyword.status) }}</td>
+            <td class="px-2">{{ keyword.createdAt }}</td>
+            <td class="px-2">{{ keyword.updatedAt }}</td>
           </tr>
         </tbody>
       </table>
