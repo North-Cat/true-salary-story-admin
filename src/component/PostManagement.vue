@@ -320,6 +320,14 @@ async function initConfirmedPost() {
   // // 清空下架拒絕原因
   removeReason.value = undefined;
 }
+// 重新整理
+function refresh() {
+  if (curTab.value === Tab.CONFIRMED) {
+    getConfirmedPosts();
+  } else if (curTab.value === Tab.UNCONFIRMED) {
+    getUnconfirmedPosts();
+  }
+}
 const scrollToTop = () => {
   window.scrollTo({
     top: 0,
@@ -335,25 +343,30 @@ const scrollToTop = () => {
     </h5>
     <!-- 管理匿名分享 -->
     <div class="w-full flex flex-col p-6">
-      <div class="w-full flex">
-        <div class="py-3 pe-6">
-          <button
-            :class="tabClass(Tab.UNCONFIRMED)"
-            class="pb-2 border-b-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-            @click="changeTab(Tab.UNCONFIRMED), initUnconfirmPost()"
-          >
-            <h6>{{ `待審核( ${unconfirmedPostsCount} )` }}</h6>
-          </button>
+      <div class="w-full flex justify-between items-center">
+        <div class="flex">
+          <div class="py-3 pe-6">
+            <button
+              :class="tabClass(Tab.UNCONFIRMED)"
+              class="pb-2 border-b-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+              @click="changeTab(Tab.UNCONFIRMED), initUnconfirmPost()"
+            >
+              <h6>{{ `待審核( ${unconfirmedPostsCount} )` }}</h6>
+            </button>
+          </div>
+          <div class="py-3 pe-6">
+            <button
+              :class="tabClass(Tab.CONFIRMED)"
+              class="pb-2 border-b-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
+              @click="changeTab(Tab.CONFIRMED), initConfirmedPost()"
+            >
+              <h6>已審核</h6>
+            </button>
+          </div>
         </div>
-        <div class="py-3 pe-6">
-          <button
-            :class="tabClass(Tab.CONFIRMED)"
-            class="pb-2 border-b-2 hover:border-b-2 hover:text-blue hover:border-b-blue transition duration-300 ease-in-out mr-3"
-            @click="changeTab(Tab.CONFIRMED), initConfirmedPost()"
-          >
-            <h6>已審核</h6>
-          </button>
-        </div>
+        <BaseButton class="" cate="gray-text" @click="refresh">
+          <div class="icon-refresh text-2xl"></div>
+        </BaseButton>
       </div>
 
       <!-- 待審核頁籤 -->

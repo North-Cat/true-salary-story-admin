@@ -3,12 +3,15 @@
   <!-- 通知 -->
   <notifications position="top right" class="my-notification" :duration="3000" :max="5" />
   <!-- modal -->
-  <default-modal></default-modal>
+  <DefaultModal></DefaultModal>
+  <!-- loading -->
+  <PageLoading></PageLoading>
 </template>
 
 <script setup lang="ts">
 import router from './router';
 import DefaultModal from '@/component/DefaultModal.vue';
+import PageLoading from '@/component/PageLoading.vue';
 import { getCookie } from 'typescript-cookie';
 
 router.beforeEach((to, from, next) => {
